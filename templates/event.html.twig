@@ -1,0 +1,152 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ event.name }}</h1>
+    </div>
+    <div class="row raffle">
+        <div class="span12">
+            <div class="btn-group">
+                <a id="pick-winner" href="" class="btn btn-inverse">Pick a random winner</a>
+                <a id="clear-winners" href="" class="btn btn-danger"><i class="icon-remove"></i></a>
+            </div>
+
+        </div>
+    </div>
+    <div class="row result">
+        <div id="raffle-result" class="span12">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <h2>Attendees</h2>
+            <p>
+                {% for member in members %}
+                    <img id="member-{{ member.member.member_id }}" src="{{ member.member_photo.thumb_link }}" alt="{{ member.member.name}}" class="thumb img-rounded" data-big-src="{{ member.member_photo.highres_link|default(member.member_photo.thumb_link) }}">
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <a href="#" class="btn btn-success"><i class="icon-plus icon-white"></i> I'm not here, add me!</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" charset="utf-8">
+
+    var wIntervalId, sIntervalId, interval, intervalMultiplier, counter = 0, members;
+
+    interval = 100;
+    intervalMultiplier = 200;
+
+    function highlightPicture(members){
+
+        var animateOn, animateOff, member,
+            animtime = 50,
+            delay = interval - (animtime * 2);
+
+        animateOn = {
+            borderColor: "#333333",
+            backgroundColor: "#CCC",
+            opacity: .25
+        };
+
+        animateOff = {
+            borderColor: "#FFF",
+            backgroundColor: "#FFF",
+            opacity: 1
+        };
+
+        member = $(getWeakRandom(members));
+
+        member.animate(animateOn, animtime).delay(delay).animate(animateOff, animtime);
+
+        adjustInterval();
+    }
+
+	$('#pick-winner').click( function pickWinner(event) {
+
+        var winner;
+
+        members = $('.thumb');
+
+        event.preventDefault();
+
+        //Get a Winner
+        getWinner(members);
+
+        //Kickoff Animation
+        sIntervalId = setInterval(highlightPicture, interval, members);
+        wIntervalId = setInterval(showWinner, interval * intervalMultiplier);
+    });
+
+    function showWinner(){
+
+        var $winner, html;
+
+        //Still waiting for winner, animate some more
+        if (winner == undefined) {
+            wIntervalId = setInterval(showWinner, interval*10);
+        }
+
+        //Show winner
+        $winner = $(winner).clone();
+        $winner.attr('src', $winner.attr('data-big-src'));
+        $winner.removeClass('thumb').addClass('photo').removeClass('img-rounded');
+
+        html = "<div class=\"winner\">"+ $winner[0].outerHTML +"<div class=\"name\">"+$winner.attr('alt')+"</div></div>";
+
+        clearInterval(sIntervalId);
+        $('#raffle-result').append(html).slideDown();
+
+        clearInterval(wIntervalId);
+
+    }
+
+    function getWeakRandom(array) {
+        return array[Math.floor(Math.random() * array.length)]
+    }
+
+    function getWinner(array) {
+        var min = 0, max, url;
+
+        max = array.length;
+
+        url = "http://www.random.org/integers/?num=1&min="+min+"&max="+max+"&col=1&base=10&format=plain&rnd=new"
+
+        $.get(url, function(data){
+            winner = $(array[parseInt(data)])[0];
+        });
+    }
+
+    function adjustInterval(){
+
+        counter++;
+
+        modifier = (counter / intervalMultiplier);
+
+        pctGrowth = 1 + modifier;
+        linearMultiplier = (80) / (modifier * 100);
+
+        interval = interval * pctGrowth + (linearMultiplier * modifier);
+
+        console.log(interval + ": " + pctGrowth + "," + linearMultiplier);
+
+        clearInterval(sIntervalId);
+        sIntervalId = setInterval(highlightPicture, interval, members);
+
+    }
+
+    $('#clear-winners').click( function (event) {
+        event.preventDefault();
+
+        $('#raffle-result').html('').hide("fast");
+    });
+</script>
+
+{% endblock %}

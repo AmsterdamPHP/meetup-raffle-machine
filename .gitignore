@@ -1,4 +1,6 @@
+.idea
 /vendor/
 /cache/
 silex.log
+/config/parameters.yml
 

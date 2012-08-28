@@ -1,0 +1,11 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <h1>Select a Meeting</h1>
+
+    <ul>
+		{% for event in events %}
+		    <li><a href="{{ path('event', {id: event.id}) }}">{{ event.name }} - {{ (event.time/1000)|date('d/m/Y') }} {{event.time}}</a></li>
+		{% endfor %}
+    </ul>
+{% endblock %}

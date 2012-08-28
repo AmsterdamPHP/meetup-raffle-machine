@@ -1,6 +1,12 @@
 {
-    "hash": "cd5e6b8ff97f6f69ecc5b590eb7bc7fa",
+    "hash": "8b3ed5fd420e656b8ead9037b99f6b9e",
     "packages": [
+        {
+            "package": "blobaugh/meetup-api-client",
+            "version": "dev-composer-support",
+            "source-reference": "dc39c075f0ac0c179ac319edc451ced535501027",
+            "commit-date": "1345482734"
+        },
         {
             "package": "monolog/monolog",
             "version": "1.1.0"
@@ -50,7 +56,7 @@
         {
             "package": "symfony/class-loader",
             "version": "dev-master",
-            "source-reference": "v2.1.0-RC1",
+            "source-reference": "v2.1.0-BETA4",
             "commit-date": "1342347231"
         },
         {
@@ -110,8 +116,8 @@
         {
             "package": "symfony/event-dispatcher",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA4",
-            "commit-date": "1342739894"
+            "source-reference": "76c76f62702b09e0f182ae618be0f1d79e2a711f",
+            "commit-date": "1345066712"
         },
         {
             "package": "symfony/finder",
@@ -134,8 +140,8 @@
         {
             "package": "symfony/form",
             "version": "dev-master",
-            "source-reference": "43affe655a965d225557c289b0efcfc3dfbf11d5",
-            "commit-date": "1345137747"
+            "source-reference": "74583bb7a8ed758c29431b4900467db04ddd0b32",
+            "commit-date": "1345322868"
         },
         {
             "package": "symfony/http-foundation",
@@ -270,6 +276,18 @@
             "commit-date": "1344856683"
         },
         {
+            "package": "symfony/yaml",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/yaml",
+            "version": "dev-master",
+            "source-reference": "6b3eb66a7c4495dcaa35a64dd93c8ba8c29f35d8",
+            "commit-date": "1344325256"
+        },
+        {
             "package": "twig/twig",
             "version": "dev-master",
             "alias-pretty-version": "1.9.x-dev",
@@ -278,13 +296,18 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "f2f698c820d4396f519ef4175ad6fe79fcfb9ecf",
-            "commit-date": "1344328685"
+            "source-reference": "3e4057b4b14a2f90db7c895e3e9bcbd3d23875e8",
+            "commit-date": "1345222881"
         }
     ],
     "packages-dev": null,
     "aliases": [
-
+        {
+            "package": "blobaugh/meetup-api-client",
+            "version": "dev-composer-support",
+            "alias": "dev-master",
+            "alias_normalized": "9999999-dev"
+        }
     ],
     "minimum-stability": "dev",
     "stability-flags": [
