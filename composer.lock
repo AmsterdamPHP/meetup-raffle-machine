@@ -1,11 +1,11 @@
 {
-    "hash": "8b3ed5fd420e656b8ead9037b99f6b9e",
+    "hash": "28e704feb8d56ea821d2ca28568f4979",
     "packages": [
         {
             "package": "blobaugh/meetup-api-client",
-            "version": "dev-composer-support",
-            "source-reference": "dc39c075f0ac0c179ac319edc451ced535501027",
-            "commit-date": "1345482734"
+            "version": "dev-master",
+            "source-reference": "36402b0c3bd145d196c6202fbb0471793f373795",
+            "commit-date": "1345660027"
         },
         {
             "package": "monolog/monolog",
@@ -22,6 +22,12 @@
             "version": "dev-master",
             "source-reference": "db836b8cfadc0f39dacafa2bf311a1ab603600bb",
             "commit-date": "1343051648"
+        },
+        {
+            "package": "predis/predis",
+            "version": "dev-master",
+            "source-reference": "5a2c61c02bfb26e1e44460bb2a141c433a92808f",
+            "commit-date": "1346776336"
         },
         {
             "package": "silex/silex",
@@ -302,15 +308,11 @@
     ],
     "packages-dev": null,
     "aliases": [
-        {
-            "package": "blobaugh/meetup-api-client",
-            "version": "dev-composer-support",
-            "alias": "dev-master",
-            "alias_normalized": "9999999-dev"
-        }
+
     ],
     "minimum-stability": "dev",
-    "stability-flags": [
-
-    ]
+    "stability-flags": {
+        "blobaugh/meetup-api-client": 20,
+        "predis/predis": 20
+    }
 }

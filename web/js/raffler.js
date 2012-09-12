@@ -1,58 +1,54 @@
 function Raffler(membersList, actionButton, clearButton, resultDiv) {
 
-	this.callInterval = 100;
-	this.totalCycles  = 100;
-	
 	this.participants     = membersList;
 	this.resultDiv        = $(resultDiv);
 	this.winnerAvailable  = false;
-	this.currentCycle     = 0;
-	
+
+	this.currentCycle;
+	this.callInterval;
+	this.totalCycles;
 	this.winner;
 	this.wIntervalId;
 	this.sIntervalId;
-	
+
 	// Bind Start Button
-	$(actionButton).click(function (event) {
-		event.preventDefault();
-		this.start();
-	})
-	
+	$(actionButton).click(this.startBtnAction.bind(this));
+
 	// Bind Clear Button
-    $(clearButton).click( function (event) {
-        event.preventDefault();
-        this.resultDiv.html('').hide("fast");
-    });
+    $(clearButton).click(this.clearWinnersBtnAction.bind(this));
 }
 
-Raffler.prototype.start = function()
-{
+Raffler.prototype.start = function () {
+    this.callInterval = 100;
+    this.totalCycles = 100;
+    this.currentCycle = 0;
+
     //Get a Winner
     this.selectWinner();
 
     //Kickoff Animation
-    this.sIntervalId = setInterval(this.cycle, this.callInterval);
-    this.wIntervalId = setInterval(this.showWinner, this.callInterval * this.totalCycles);
-}
+    this.setAnimationInterval(this.callInterval);
+    this.setWinnerInterval(this.callInterval, this.totalCycles);
+};
 
 Raffler.prototype.cycle = function()
 {
 	var participant;
-	
+
 	this.currentCycle++;
-	
+
 	// Animation: Select a participant and highlight him
 	participant = this.randomParticipant();
 	this.highlightParticipant(participant);
-	
+
 	// Adjust speed (slower towards end)
 	this.adjustSpeed();
-}
+};
 
 Raffler.prototype.adjustSpeed = function()
 {
 	var modifier, growthPct, linearMultiplier;
-	
+
     modifier         = (this.currentCycle / this.totalCycles);
     growthPct        = 1 + modifier;
     linearMultiplier = 80 / (modifier * 100);
@@ -62,8 +58,8 @@ Raffler.prototype.adjustSpeed = function()
 
 	// Set new interval
     clearInterval(this.sIntervalId);
-    this.sIntervalId = setInterval(this.cycle, this.callInterval);
-}
+	this.setAnimationInterval(this.callInterval);
+};
 
 Raffler.prototype.selectWinner = function()
 {
@@ -75,25 +71,25 @@ Raffler.prototype.selectWinner = function()
 
     $.get(url, function(data){
         this.winner = $(this.participants[parseInt(data)])[0];
-		
+
 		this.winnerAvailable = true;
-    });
-}
+    }.bind(this));
+};
 
 Raffler.prototype.showWinner = function()
 {
     var $winner, html;
 
     //Still waiting for winner, animate some more
-    if (winner == undefined) {
-        
-		this.wIntervalId = setInterval(this.showWinner, this.callInterval * 10);
-		
+    if (this.winnerAvailable == undefined) {
+
+		this.setWinnerInterval(this.callInterval, 10);
+
 		return;
     }
 
 	// Highlight Winner first
-	this.highlightParticipant(winner);
+	this.highlightParticipant($(this.winner));
 
     //Show winner
     $winner = $(this.winner).clone();
@@ -102,30 +98,32 @@ Raffler.prototype.showWinner = function()
 
     html = "<div class=\"winner\">"+ $winner[0].outerHTML +"<div class=\"name\">"+$winner.attr('alt')+"</div></div>";
 
-    this.resultDiv.append(html).slideDown();
+    this.resultDiv.find('.modal-body').append(html);
 
-    clearInterval(sIntervalId);
-	clearInterval(wIntervalId);    
-}
+    this.resultDiv.modal();
+
+    clearInterval(this.sIntervalId);
+	clearInterval(this.wIntervalId);
+};
 
 Raffler.prototype.randomParticipant = function()
 {
 	var rnd = Math.floor(Math.random() * this.participants.length);
 
 	return this.participants[rnd];
-}
+};
 
 Raffler.prototype.highlightParticipant = function(participant)
 {
 
     var animateOn, animateOff,
         animtime = 50,
-        delay = this.calInterval - (animtime * 2);
+        delay = this.callInterval - (animtime * 2);
 
     animateOn = {
         borderColor: "#333333",
-        backgroundColor: "#CCC",
-        opacity: .25
+        backgroundColor: "#CC0000",
+        opacity: 1
     };
 
     animateOff = {
@@ -134,6 +132,28 @@ Raffler.prototype.highlightParticipant = function(participant)
         opacity: 1
     };
 
-    participant.animate(animateOn, animtime).delay(delay).animate(animateOff, animtime);
+    $(participant).animate(animateOn, animtime).delay(delay).animate(animateOff, animtime);
 };
 
+Raffler.prototype.clearWinnersBtnAction = function (event) {
+	event.preventDefault();
+	this.resultDiv.html('').hide("fast");
+};
+
+Raffler.prototype.startBtnAction = function (event) {
+	event.preventDefault();
+	this.start();
+};
+
+Raffler.prototype.setAnimationInterval = function (interval) {
+	this.sIntervalId = setInterval(this.cycle.bind(this), interval);
+};
+
+Raffler.prototype.setWinnerInterval = function (interval, totalCycles) {
+
+    if (totalCycles == undefined) {
+        totalCycles = 10;
+    }
+
+    this.wIntervalId = setInterval(this.showWinner.bind(this), interval * totalCycles);
+};
