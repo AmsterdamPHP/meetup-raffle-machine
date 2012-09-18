@@ -1,5 +1,9 @@
 {% extends "layout.html.twig" %}
 
+{% set activePage = 'event' %}
+
+{% block title event.name %}
+
 {% block content %}
     <div class="page-header">
         <h1>{{ event.name }}</h1>
