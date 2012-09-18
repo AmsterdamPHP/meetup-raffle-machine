@@ -5,11 +5,41 @@
 {% block title 'Meetups' %}
 
 {% block content %}
-    <h1>Select a Meeting</h1>
+    <div class="page-header">
+        <h1>Our meetups <small>select one to add yourself to raffles</small></h1>
+        <p class="lead">
+            During our meetups we will use this system to raffle off our prizes. It automatically loads everyone who RSVP'd using meetup.com, but if you are not using meetup, just go over to the meeting and add yourself using the "i'm not here" button.
+        </p>
+    </div>
 
-    <ul>
-		{% for event in events %}
-		    <li><a href="{{ path('event', {id: event.id}) }}">{{ event.name }} - {{ (event.time/1000)|date('d/m/Y') }}</a></li>
-		{% endfor %}
-    </ul>
+    {% if current is not empty %}
+    <div class="row">
+        <div class="span12">
+            <h2>Current meeting</h2>
+            <a class="btn btn-large btn-block btn-success" href="{{ path('event', {id: current.id}) }}">{{ current.name }}</a>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="span6">
+            <h2>Upcoming Meetups</h2>
+            <ul>
+        		{% for event in upcoming %}
+        		    <li><a href="{{ path('event', {id: event.id}) }}">{{ event.name }} - {{ (event.time/1000)|date('d/m/Y') }}</a></li>
+        		{% endfor %}
+            </ul>
+        </div>
+        <div class="span6">
+            <h2>Past Meetups</h2>
+            <ul>
+        		{% for event in past %}
+        		    <li><a href="{{ path('event', {id: event.id}) }}">{{ event.name }} - {{ (event.time/1000)|date('d/m/Y') }}</a></li>
+        		{% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+
 {% endblock %}

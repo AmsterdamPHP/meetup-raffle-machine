@@ -11,9 +11,15 @@ define('GRAVATAR_URL', "http://www.gravatar.com/avatar/%s%s");
 $app->get('/', function () use ($app) {
 
     $m = new MeetupEvents($app['meetup']);
-    $events = $m->getEvents( array( 'group_urlname' => 'amsterdamphp', 'status' => 'past,upcoming')  );
+    $pastEvents     = $m->getEvents( array( 'group_urlname' => 'amsterdamphp', 'status' => 'past')  );
+    $upcomingEvents = $m->getEvents( array( 'group_urlname' => 'amsterdamphp', 'status' => 'upcoming')  );
 
-    return $app['twig']->render('index.html.twig', array('events' => $events));
+    //$dateOfFirst = DateTime::createFromFormat('U', ($upcomingEvents[0]['time']/1000));
+    $dateOfFirst = DateTime::createFromFormat('U', time());
+
+    $current = ($dateOfFirst->format('Ymd') == date('Ymd'))?  array_shift($upcomingEvents) : null;
+
+    return $app['twig']->render('index.html.twig', array('past' => $pastEvents, 'upcoming' => $upcomingEvents, 'current' => $current));
 })
 ->bind('homepage')
 ;
@@ -64,6 +70,17 @@ $app->post('/event/{id}/adduser', function ($id, Request $request) use ($app) {
 
     //return new JsonResponse(array("User Added."), 200);
     return new RedirectResponse("/event/".$id);
+});
+
+$app->get('/event/{id}/removeuser/{userId}', function ($id, $userId) use ($app) {
+
+    /** @var $redis \Predis\Client */
+    $redis = $app['redis'];
+
+    //Add user to event
+    $redis->lrem('event:'.$id, 0, $userId);
+
+    return new JsonResponse(array("User Removed: $userId."), 200);
 });
 
 $app->error(function (\Exception $e, $code) use ($app) {
