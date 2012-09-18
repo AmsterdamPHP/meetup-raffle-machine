@@ -24,7 +24,7 @@ $app->get('/event/{id}', function ($id) use ($app) {
     $event = $eventApi->getEvent($id, array());
 
     $rsvpApi = new MeetupRsvps($app['meetup']);
-    $meetupMembers = $rsvpApi->getRsvps(array('event_id' => $id));
+    $meetupMembers = $rsvpApi->getRsvps(array('event_id' => $id, 'rsvp' => 'yes'));
 
     //Get Manual Users
     $userList = $app['redis']->lrange('event:'.$id, 0, 1000);
