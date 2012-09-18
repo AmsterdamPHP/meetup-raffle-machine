@@ -14,8 +14,7 @@ $app->get('/', function () use ($app) {
     $pastEvents     = $m->getEvents( array( 'group_urlname' => 'amsterdamphp', 'status' => 'past')  );
     $upcomingEvents = $m->getEvents( array( 'group_urlname' => 'amsterdamphp', 'status' => 'upcoming')  );
 
-    //$dateOfFirst = DateTime::createFromFormat('U', ($upcomingEvents[0]['time']/1000));
-    $dateOfFirst = DateTime::createFromFormat('U', time());
+    $dateOfFirst = DateTime::createFromFormat('U', ($upcomingEvents[0]['time']/1000));
 
     $current = ($dateOfFirst->format('Ymd') == date('Ymd'))?  array_shift($upcomingEvents) : null;
 
