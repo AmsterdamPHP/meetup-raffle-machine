@@ -7,8 +7,8 @@
     <div class="row raffle">
         <div class="span12">
             <div class="btn-group">
-                <a id="pick-winner" href="" class="btn btn-inverse">Pick a random winner</a>
-                <a id="clear-winners" href="" class="btn btn-danger"><i class="icon-remove"></i></a>
+                <a id="pick-winner" href="" class="btn btn-inverse"><i class="icon-gift icon-white"></i> Pick a random winner</a>
+                <a  href="#adduser_modal" role="button" class="btn btn-success" data-toggle="modal"><i class="icon-plus icon-white"></i> I'm not here, add me!</a>
             </div>
 
         </div>
@@ -20,7 +20,7 @@
               <h3 id="myModalLabel">And the winner is...</h3>
             </div>
             <div class="modal-body">
-              
+
             </div>
             <div class="modal-footer">
               <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
@@ -37,11 +37,6 @@
             </p>
         </div>
     </div>
-    <div class="row">
-        <div class="span12">
-            <a  href="#adduser_modal" role="button" class="btn btn-success" data-toggle="modal"><i class="icon-plus icon-white"></i> I'm not here, add me!</a>
-        </div>
-    </div>
 
     <div id="adduser_modal" class="modal hide fade">
       <div class="modal-header">
@@ -50,21 +45,21 @@
       </div>
       <div class="modal-body">
           <form id="adduser" action="/event/{{event.id}}/adduser" method="POST" class="form-horizontal">
-            
+
             <div class="control-group">
                 <label class="control-label" for="email">Email</label>
                 <div class="controls">
                     <input type="text" name="email" value="" id="email">
                     <span class="help-block™">bonus points for <a href="http://gravatar.com">gravatar.com</a> account.</span>
                 </div>
-                
+
             </div>
             <div class="control-group">
                 <label class="control-label" for="name">Name</label>
                 <div class="controls">
                     <input type="text" name="name" value="" id="name">
                 </div>
-            </div>   
+            </div>
             <div class="form-actions">
               <button type="submit" class="btn btn-primary">Add me!</button>
               <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
@@ -76,122 +71,8 @@
 {% endblock %}
 
 {% block javascripts %}
-<script src="/js/raffler.js" type="text/javascript" charset="utf-8">
-    
-</script>
-<script type="text/javascript" charset="utf-8">
-    
-    var raffler = new Raffler($('.thumb'), '#pick-winner', '#clear-winners', '#raffle-result' );
-    
-    // var wIntervalId, sIntervalId, interval, intervalMultiplier, counter = 0, members;
-    // 
-    //     function highlightPicture(members){
-    // 
-    //         var animateOn, animateOff, member,
-    //             animtime = 50,
-    //             delay = interval - (animtime * 2);
-    // 
-    //         animateOn = {
-    //             borderColor: "#333333",
-    //             backgroundColor: "#CCC",
-    //             opacity: .25
-    //         };
-    // 
-    //         animateOff = {
-    //             borderColor: "#FFF",
-    //             backgroundColor: "#FFF",
-    //             opacity: 1
-    //         };
-    // 
-    //         member = $(getWeakRandom(members));
-    // 
-    //         member.animate(animateOn, animtime).delay(delay).animate(animateOff, animtime);
-    // 
-    //         adjustInterval();
-    //     }
-    // 
-    //     $('#pick-winner').click( function pickWinner(event) {
-    // 
-    //         var winner;
-    // 
-    //         members = $('.thumb');
-    // 
-    //         interval = 100;
-    //         intervalMultiplier = 100;
-    //         counter = 0;
-    // 
-    //         event.preventDefault();
-    // 
-    //         //Get a Winner
-    //         getWinner(members);
-    // 
-    //         //Kickoff Animation
-    //         sIntervalId = setInterval(highlightPicture, interval, members);
-    //         wIntervalId = setInterval(showWinner, interval * intervalMultiplier);
-    //     });
-    // 
-    //     function showWinner(){
-    // 
-    //         var $winner, html;
-    // 
-    //         //Still waiting for winner, animate some more
-    //         if (winner == undefined) {
-    //             wIntervalId = setInterval(showWinner, interval*10);
-    //         }
-    // 
-    //         //Show winner
-    //         $winner = $(winner).clone();
-    //         $winner.attr('src', $winner.attr('data-big-src'));
-    //         $winner.removeClass('thumb').addClass('photo').removeClass('img-rounded');
-    // 
-    //         html = "<div class=\"winner\">"+ $winner[0].outerHTML +"<div class=\"name\">"+$winner.attr('alt')+"</div></div>";
-    // 
-    //         clearInterval(sIntervalId);
-    //         $('#raffle-result').append(html).slideDown();
-    // 
-    //         clearInterval(wIntervalId);
-    // 
-    //     }
-    // 
-    //     function getWeakRandom(array) {
-    //         return array[Math.floor(Math.random() * array.length)]
-    //     }
-    // 
-    //     function getWinner(array) {
-    //         var min = 0, max, url;
-    // 
-    //         max = array.length;
-    // 
-    //         url = "http://www.random.org/integers/?num=1&min="+min+"&max="+max+"&col=1&base=10&format=plain&rnd=new"
-    // 
-    //         $.get(url, function(data){
-    //             winner = $(array[parseInt(data)])[0];
-    //         });
-    //     }
-    // 
-    //     function adjustInterval(){
-    // 
-    //         counter++;
-    // 
-    //         modifier = (counter / intervalMultiplier);
-    // 
-    //         pctGrowth = 1 + modifier;
-    //         linearMultiplier = (60) / (modifier * 100);
-    // 
-    //         interval = interval * pctGrowth + (linearMultiplier * modifier);
-    // 
-    //         console.log(interval + ": " + pctGrowth + "," + linearMultiplier);
-    // 
-    //         clearInterval(sIntervalId);
-    //         sIntervalId = setInterval(highlightPicture, interval, members);
-    // 
-    //     }
-    // 
-    //     $('#clear-winners').click( function (event) {
-    //         event.preventDefault();
-    // 
-    //         $('#raffle-result').html('').hide("fast");
-    //     });
-</script>
-
+    <script src="/js/raffler.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+        var raffler = new Raffler($('.thumb'), '#pick-winner', '#clear-winners', '#raffle-result' );
+    </script>
 {% endblock %}

@@ -27,13 +27,11 @@ body {
     text-align: center;
     clear: both;
     display:none;
-    margin-top: 10px;
-    margin-bottom: 10px;;
 }
 
 #raffle-result .winner {
     width: 200px;
-    float: left;
+    margin: 0 auto;
 }
 
 #raffle-result .winner .name {

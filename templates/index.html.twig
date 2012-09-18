@@ -5,7 +5,7 @@
 
     <ul>
 		{% for event in events %}
-		    <li><a href="{{ path('event', {id: event.id}) }}">{{ event.name }} - {{ (event.time/1000)|date('d/m/Y') }} {{event.time}}</a></li>
+		    <li><a href="{{ path('event', {id: event.id}) }}">{{ event.name }} - {{ (event.time/1000)|date('d/m/Y') }}</a></li>
 		{% endfor %}
     </ul>
 {% endblock %}
