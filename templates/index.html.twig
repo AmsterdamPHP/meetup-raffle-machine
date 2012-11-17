@@ -26,7 +26,7 @@
             <h2>Upcoming Meetups</h2>
             <ul>
         		{% for event in upcoming %}
-        		    <li><a href="{{ path('event', {id: event.id}) }}">{{ event.name }} - {{ (event.time/1000)|date('d/m/Y') }}</a></li>
+        		    <li><a href="{{ path('event', {id: event.id}) }}">{{ event.name }} - {{ (event.date)|date('d/m/Y') }}</a></li>
         		{% endfor %}
             </ul>
         </div>
@@ -34,7 +34,7 @@
             <h2>Past Meetups</h2>
             <ul>
         		{% for event in past %}
-        		    <li><a href="{{ path('event', {id: event.id}) }}">{{ event.name }} - {{ (event.time/1000)|date('d/m/Y') }}</a></li>
+        		    <li><a href="{{ path('event', {id: event.id}) }}">{{ event.name }} - {{ (event.date)|date('d/m/Y') }}</a></li>
         		{% endfor %}
             </ul>
         </div>

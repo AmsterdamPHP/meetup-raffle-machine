@@ -35,8 +35,8 @@
         <div class="span12">
             <h2>Attendees</h2>
             <p>
-                {% for member in members %}
-                    <img id="member-{{ member.member.member_id }}" src="{{ member.member_photo.thumb_link }}" title="{{ member.member.name}}" alt="{{ member.member.name}}" class="thumb img-rounded" data-big-src="{{ member.member_photo.highres_link|default(member.member_photo.thumb_link) }}">
+                {% for member in event.users %}
+                    <img id="member-{{ member.id }}" src="{{ member.thumbnail }}" title="{{ member.name }}" alt="{{ member.name }}" class="thumb img-rounded" data-id="{{ member.id }}" data-big-src="{{ member.photo|default(member.thumbnail) }}">
                 {% endfor %}
             </p>
         </div>
@@ -48,7 +48,7 @@
         <h3>Add user</h3>
       </div>
       <div class="modal-body">
-          <form id="adduser" action="/event/{{event.id}}/adduser" method="POST" class="form-horizontal">
+          <form id="adduser" action="/event/{{ event.id }}/adduser" method="POST" class="form-horizontal">
 
             <div class="control-group">
                 <label class="control-label" for="email">Email</label>
