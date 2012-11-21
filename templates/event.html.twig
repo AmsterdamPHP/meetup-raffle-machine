@@ -36,7 +36,12 @@
             <h2>Attendees</h2>
             <p>
                 {% for member in members %}
-                    <img id="member-{{ member.member.member_id }}" src="{{ member.member_photo.thumb_link }}" title="{{ member.member.name}}" alt="{{ member.member.name}}" class="thumb img-rounded" data-big-src="{{ member.member_photo.highres_link|default(member.member_photo.thumb_link) }}">
+                    <img id="member-{{ member.member.member_id|default('--') }}" 
+                         src="{{ member.member_photo.thumb_link|default('') }}" 
+                         title="{{ member.member.name|default('unknown')}}" 
+                         alt="{{ member.member.name|default('unknown') }}" 
+                         class="thumb img-rounded" 
+                         data-big-src="{{ member.member_photo.highres_link|default(member.member_photo.thumb_link|default('')) }}">
                 {% endfor %}
             </p>
         </div>
