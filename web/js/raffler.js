@@ -98,7 +98,8 @@ Raffler.prototype.showWinner = function()
 
     html = "<div class=\"winner\">"+ $winner[0].outerHTML +"<div class=\"name\">"+$winner.attr('alt')+"</div></div>";
 
-    this.resultDiv.find('.modal-body').html(html);
+    this.resultDiv.find('.modal-winner').html(html);
+    this.resultDiv.find('#winner-id').val($winner.attr('data-id'));
 
     this.resultDiv.modal();
 

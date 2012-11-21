@@ -57,37 +57,16 @@ $app->get('/event/{id}/removeuser/{userId}', function ($id, $userId) use ($app) 
     return new JsonResponse(array("User Removed: $userId."), 200);
 });
 
-$app->post('/event/{id}/tagwinner', function ($id, Request $request) use ($app) {
+$app->post('/event/{id}/store-winner', function ($id, Request $request) use ($app) {
 
-        /** @var $redis \Predis\Client */
-        $redis = $app['redis'];
+        $operation = $app['events']->storeWinner($id, $request->get('winner-id'), $request->get('prize'));
 
-        $user = array(
-            'member' => array(
-                'name' => $request->get('name'),
-                'member_id' => $userId
-            ),
-            'member_photo' => array(
-                'thumb_link' => sprintf(GRAVATAR_URL, $emailHash, '?s=80'),
-                'highres_link' => sprintf(GRAVATAR_URL, $emailHash, '?s=200'),
-            )
-        );
+        if ( ! $operation) {
+            return new JsonResponse(array("Error storing winner."), 500);
+        }
 
-        $winner = array(
-            'user'  => $user,
-            'prize' => $request->get('prize')
-        );
-
-        $winnerId = 'winner:' . $winner['prize'] . $id;
-
-        $redis->set($winnerId, json_encode($winner));
-
-        //Add user to event
-        $redis->rpush('event_winner:' . $id, json_encode($winner));
-
-        //return new JsonResponse(array("User Added."), 200);
-        return new RedirectResponse("/event/".$id);
-    });
+        return new JsonResponse(array("Winner stored."), 200);
+});
 
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {

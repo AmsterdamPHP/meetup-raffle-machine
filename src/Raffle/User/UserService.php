@@ -32,6 +32,11 @@ class UserService
         $this->rsvpApi = new \MeetupRsvps($this->meetupConfig);
     }
 
+    public function getUser($id)
+    {
+        //TODO
+    }
+
     /**
      * Builds a list of users at an event, pulling from various sources.
      *

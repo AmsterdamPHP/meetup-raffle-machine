@@ -86,6 +86,19 @@ class EventService
         return $this->redisApi->rpush('event:' . $eventId, $user->getJson());
     }
 
+    public function storeWinner($eventId, $userId, $prize)
+    {
+
+        $user = $this->userService->getUser($userId);
+
+        $data = array(
+            'prize' => $prize,
+            'user'  => $user->getJson(),
+        );
+
+        //TODO Store winner
+    }
+
     /**
      * Parses Meetup Data into Event data
      *
