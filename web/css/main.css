@@ -8,6 +8,12 @@ body {
 	height: 80px;
 	margin: 5px;
     border: 2px solid #FFF;
+
+    opacity: 0.6;
+}
+
+.thumb.active {
+    opacity: 1;
 }
 
 .photo {
