@@ -20,17 +20,6 @@ $app->get('/event/{id}', function ($id) use ($app) {
     );
 })->bind('event');
 
-$app->post('/event/{id}/store-winner', function ($id, Request $request) use ($app) {
-
-        $operation = $app['events']->storeWinner($id, $request->get('winner-id'), $request->get('prize'));
-
-        if ( ! $operation) {
-            return new JsonResponse(array("Error storing winner."), 500);
-        }
-
-        return new JsonResponse(array("Winner stored."), 200);
-});
-
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {
         return;
