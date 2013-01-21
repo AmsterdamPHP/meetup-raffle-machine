@@ -6,8 +6,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-define('GRAVATAR_URL', "http://www.gravatar.com/avatar/%s%s");
-
 $app->get('/', function () use ($app) {
 
     $pastEvents     = $app['events']->loadEvents('amsterdamphp', 'past');

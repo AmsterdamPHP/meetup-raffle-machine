@@ -3,8 +3,6 @@ namespace Raffle\User;
 
 class UserService
 {
-    const RAW_GRAVATAR_URL = "http://www.gravatar.com/avatar/%s%s";
-
     /**
      * @var array
      */
