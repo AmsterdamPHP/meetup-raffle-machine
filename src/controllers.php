@@ -9,20 +9,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 $app->get('/', function () use ($app) {
     return $app['twig']->render(
         'index.html.twig',
-        array(
-            'meetups' => $app['meetup']->getEvents()
-        )
+        array('meetups' => $app['meetup']->getEvents())
     );
 })->bind('homepage');
 
 $app->get('/event/{id}', function ($id) use ($app) {
-
-    $event = $app['events']->loadEvent($id, true);
-
-    return $app['twig']->render('event.html.twig', array('event' => $event));
-})
-->bind('event')
-;
+    return $app['twig']->render(
+        'event.html.twig',
+        array('event' => $app['meetup']->getEvent($id))
+    );
+})->bind('event');
 
 $app->post('/event/{id}/store-winner', function ($id, Request $request) use ($app) {
 

@@ -3,49 +3,18 @@
 {% block title event.name %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ event.name }}</h1>
-    </div>
-    <div class="row raffle">
-        <div class="span12">
-            <div class="btn-group">
-                <a id="pick-winner" href="" class="btn btn-inverse"><i class="icon-gift icon-white"></i> Pick a random winner</a>
-            </div>
 
-        </div>
-    </div>
-    <div class="row result">
-        <div id="raffle-result" class="modal hide fade">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h3 id="myModalLabel">And the winner is...</h3>
-            </div>
-            <div class="modal-body modal-winner">
+    <h2>{{ event.name }}</h2>
 
-            </div>
-            <div class="modal-body ">
-                <form id="save-winner" action="/event/{{ event.id }}/store-winner" method="POST" class="form-inline">
-                    <input id="winner-id" name="winner-id" type="hidden" value="">
-                    <label class="control-label" for="prize">Prize</label>
-                    <input type="text" name="prize" value="" id="prize">
-                    <button type="submit" class="btn btn-primary">Store Winner!</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-              <button id="winner-store-btn" class="btn btn-success" data-dismiss="modal" aria-hidden="true">Save Winner</button>
-              <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            </div>
+    <div class="checkins">
+        {% for checkin in event.checkins %}
+        <div class="checkin">
+            <img src="{{ checkin.photo.photo_link }}" title="{{ checkin.name }}" alt="{{ checkin.name }}" />
         </div>
+        {% endfor %}
     </div>
-    <div class="row">
-        <div class="span12">
-            <h2>Attendees</h2>
-            <p>
-                {% for member in event.users %}
-                    <img id="member-{{ member.id }}" src="{{ member.thumbnail }}" title="{{ member.name }}" alt="{{ member.name }}" class="thumb active img-rounded" data-id="{{ member.id }}" data-big-src="{{ member.photo|default(member.thumbnail) }}">
-                {% endfor %}
-            </p>
-        </div>
+
+    <div class="prizes">
     </div>
 
 {% endblock %}

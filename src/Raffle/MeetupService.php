@@ -56,4 +56,39 @@ class MeetupService
             }
         );
     }
+
+    /**
+     * Get a single event.
+     *
+     * @param string $id
+     * @return array
+     */
+    public function getEvent($id)
+    {
+        $eventsRequest = new \MeetupEvents($this->connection);
+        $checkinsRequest = new \MeetupCheckins($this->connection);
+        $rsvpsRequest = new \MeetupRsvps($this->connection);
+
+        // Fetch, event, checkins and RSVPs (only the latter has pictures)
+        $event = $eventsRequest->getEvent($id, array());
+        $checkins = $checkinsRequest->getCheckins(array('event_id' => $id));
+        $rsvps = $rsvpsRequest->getRsvps(array('event_id' => $id));
+
+        // Intersect the RSVPs with the checkins and add them to the event array
+        $checkedInMemberIds = array();
+        foreach ($checkins as $checkin) {
+            $checkedInMemberIds[] = $checkin['member_id'];
+        }
+        foreach ($rsvps as $rsvp) {
+            if (in_array($rsvp['member']['member_id'], $checkedInMemberIds)) {
+                $event['checkins'][] = array(
+                    'id' => $rsvp['member']['member_id'],
+                    'name' => $rsvp['member']['name'],
+                    'photo' => $rsvp['member_photo']
+                );
+            }
+        }
+
+        return $event;
+    }
 }
