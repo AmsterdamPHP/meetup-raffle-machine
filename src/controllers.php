@@ -7,23 +7,13 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 $app->get('/', function () use ($app) {
-
-    $pastEvents     = $app['events']->loadEvents('amsterdamphp', 'past');
-    $upcomingEvents = $app['events']->loadEvents('amsterdamphp', 'upcoming');
-
-    $current = ($upcomingEvents[0]->getDate()->format('Ymd') == date('Ymd'))?  array_shift($upcomingEvents) : null;
-
     return $app['twig']->render(
         'index.html.twig',
         array(
-            'past' => $pastEvents,
-            'upcoming' => $upcomingEvents,
-            'current' => $current
+            'meetups' => $app['events']->loadEvents('amsterdamphp', 'past,upcoming')
         )
     );
-})
-->bind('homepage')
-;
+})->bind('homepage');
 
 $app->get('/event/{id}', function ($id) use ($app) {
 
