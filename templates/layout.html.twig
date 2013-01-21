@@ -4,6 +4,7 @@
         <title>{% block title '' %} - AmsterdamPHP Raffler</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,600italic,300,600" rel="stylesheet" type="text/css" />
         <link href="{{ app.request.basepath }}/css/main.css" rel="stylesheet" type="text/css" />
 
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -12,10 +13,13 @@
         <![endif]-->
     </head>
     <body>
-        <div class="title">
-            <h1>AmsterdamPHP Raffler</h1>
-        </div>
         <div class="container">
+            <h1 class="logo">
+                <a href="/">
+                    <span class="primary">AmsterdamPHP</span>
+                    <span class="secondary">Raffler</span>
+                </a>
+            </h1>
 
             {% block content %}{% endblock %}
 

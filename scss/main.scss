@@ -1,0 +1,72 @@
+$total-columns: 12;
+$column-width:  4em;
+$gutter-width:  1em;
+$grid-padding:  $gutter-width;
+
+/* compass */
+@import "compass/reset";
+@import "compass/css3";
+
+/* other plugins */
+@import "susy";
+
+body {
+    color: #ffffff;
+    background: #000000;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    font-weight: 300;
+}
+
+.container {
+    @include container;
+}
+
+.logo {
+    margin: 1em 0;
+    text-align: center;
+    line-height: 120px;
+
+    a {
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+    .primary {
+        display: inline-block;
+        width: 444px;
+        height: 80px;
+        text-indent: -9999px;
+        background-image: url("/img/logo.png");
+    }
+    .secondary {
+        display: inline-block;
+        font-size: 65px;
+        font-style: italic;
+    }
+}
+
+.title {
+    margin: 0 0 1em 0;
+    font-size: 50px;
+    text-align: center;
+}
+
+.checkins {
+    text-align: center;
+
+    .checkin {
+        @include border-radius(8px, 8px);
+        text-align: center;
+        display: inline-block;
+        overflow: hidden;
+        width: 100px;
+        height: 100px;
+        background: #333;
+        margin: 0 1em 1em 0;
+
+        img {
+            width: auto;
+            height: 100px;
+        }
+    }
+}
