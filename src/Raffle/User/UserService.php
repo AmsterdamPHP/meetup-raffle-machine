@@ -56,29 +56,4 @@ class UserService
 
         return array_merge($rsvpUsers, $redisUsers);
     }
-
-    /**
-     * Creates a new user based on email/name and stores to Redis
-     *
-     * @param string $name
-     * @param string $email
-     *
-     * @return UserEntity
-     */
-    public function createNonMeetupUser($name, $email)
-    {
-        $emailHash = md5($email);
-        $userId    = 'user:' . $emailHash;
-
-        $user = new UserEntity();
-        $user->setId('redis:' . $userId);
-        $user->setEmail($email);
-        $user->setName($name);
-        $user->setPhoto(sprintf(self::RAW_GRAVATAR_URL, $emailHash, '?s=200'));
-        $user->setThumbnail(sprintf(self::RAW_GRAVATAR_URL, $emailHash, '?s=80'));
-
-        $this->redisApi->set($userId, json_encode($user));
-
-        return $user;
-    }
 }

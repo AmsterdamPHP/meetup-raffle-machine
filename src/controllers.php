@@ -36,27 +36,6 @@ $app->get('/event/{id}', function ($id) use ($app) {
 ->bind('event')
 ;
 
-$app->post('/event/{id}/adduser', function ($id, Request $request) use ($app) {
-
-    if ( ! $app['events']->addNonMeetupUser($id, $request->get('name'), $request->get('email'))) {
-        return new Response("Error Adding user", $status = 500);
-    }
-
-    //return new JsonResponse(array("User Added."), 200);
-    return new RedirectResponse("/event/".$id);
-});
-
-$app->get('/event/{id}/removeuser/{userId}', function ($id, $userId) use ($app) {
-
-    /** @var $redis \Predis\Client */
-    $redis = $app['redis'];
-
-    //Add user to event
-    $redis->lrem('event:'.$id, 0, $userId);
-
-    return new JsonResponse(array("User Removed: $userId."), 200);
-});
-
 $app->post('/event/{id}/store-winner', function ($id, Request $request) use ($app) {
 
         $operation = $app['events']->storeWinner($id, $request->get('winner-id'), $request->get('prize'));

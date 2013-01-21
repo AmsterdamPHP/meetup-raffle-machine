@@ -12,7 +12,6 @@
         <div class="span12">
             <div class="btn-group">
                 <a id="pick-winner" href="" class="btn btn-inverse"><i class="icon-gift icon-white"></i> Pick a random winner</a>
-                <a  href="#adduser_modal" role="button" class="btn btn-success" data-toggle="modal"><i class="icon-plus icon-white"></i> I'm not here, add me!</a>
             </div>
 
         </div>
@@ -49,36 +48,6 @@
                 {% endfor %}
             </p>
         </div>
-    </div>
-
-    <div id="adduser_modal" class="modal hide fade">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>Add user</h3>
-      </div>
-      <div class="modal-body">
-          <form id="adduser" action="/event/{{ event.id }}/adduser" method="POST" class="form-horizontal">
-
-            <div class="control-group">
-                <label class="control-label" for="email">Email</label>
-                <div class="controls">
-                    <input type="text" name="email" value="" id="email">
-                    <span class="help-block™">bonus points for <a href="http://gravatar.com">gravatar.com</a> account.</span>
-                </div>
-
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="name">Name</label>
-                <div class="controls">
-                    <input type="text" name="name" value="" id="name">
-                </div>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn btn-primary">Add me!</button>
-              <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            </div>
-          </form>
-      </div>
     </div>
 
 {% endblock %}
