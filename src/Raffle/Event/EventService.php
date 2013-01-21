@@ -111,10 +111,10 @@ class EventService
         $event->setId($data['id']);
         $event->setStatus($data['status']);
         $event->setVisibility($data['visibility']);
-        $event->setVenue($data['venue']);
+        $event->setVenue(isset($data['venue']) ? $data['venue'] : null);
         $event->setDescription($data['description']);
         $event->setUrl($data['event_url']);
-        $event->setRating($data['rating']);
+        $event->setRating(isset($data['rating']) ? $data['rating'] : null);
         $event->setName($data['name']);
         $event->setDate(\DateTime::createFromFormat('U', ($data['time']/1000)));
 
