@@ -6,8 +6,7 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 
 use Symfony\Component\Yaml\Yaml;
-use Raffle\Event\EventService;
-use Raffle\User\UserService;
+use Raffle\MeetupService;
 
 $app = new Application();
 
@@ -27,9 +26,8 @@ $app['twig'] = $app->share($app->extend('twig', function($twig) {
 
 $app['redis'] = new Predis\Client();
 
-$app['meetup'] = new MeetupKeyAuthConnection($app['config']['meetup_api_key']);
-$app['users']  = new UserService($app['meetup'], $app['redis']);
-$app['events'] = new EventService($app['meetup'], $app['users'], $app['redis']);
-
+$app['meetup'] = new MeetupService(
+    new MeetupKeyAuthConnection($app['config']['meetup_api_key'])
+);
 
 return $app;

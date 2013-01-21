@@ -10,7 +10,7 @@ $app->get('/', function () use ($app) {
     return $app['twig']->render(
         'index.html.twig',
         array(
-            'meetups' => $app['events']->loadEvents('amsterdamphp', 'past,upcoming')
+            'meetups' => $app['meetup']->getEvents()
         )
     );
 })->bind('homepage');
