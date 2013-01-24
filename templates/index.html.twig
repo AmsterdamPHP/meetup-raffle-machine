@@ -7,9 +7,11 @@
     <h2 class="title">Meetups</h2>
 
     {% if meetups is not empty %}
-    <ul>
+    <ul class="meetups">
         {% for meetup in meetups %}
-        <li><a href="{{ path('event', {id: meetup.id}) }}">{{ meetup.name }}</a></li>
+        <li{% if loop.first %} class="first"{% endif %}>
+            <a href="{{ path('event', {id: meetup.id}) }}">{{ meetup.name }}</a>
+        </li>
         {% endfor %}
     </ul>
     {% endif %}

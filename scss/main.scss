@@ -51,6 +51,31 @@ body {
     text-align: center;
 }
 
+.meetups {
+    li {
+        font-size: 20px;
+    }
+
+    a {
+        background: #1a1a1a;
+        display: block;
+        color: #fff;
+        text-decoration: none;
+        padding: 0.5em;
+        margin-bottom: 1px;
+
+        &:hover {
+            background: #212121;
+        }
+    }
+
+    .first a {
+        color: rgba(179, 255, 151, 1.0);
+        text-shadow: 0 -1px 0 #000,0px 0 5px rgba(179,255,151,.8);
+        font-size: 1.2em;
+    }
+}
+
 .checkins {
     text-align: center;
 
