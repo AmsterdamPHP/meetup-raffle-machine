@@ -79,6 +79,7 @@ class MeetupService
         foreach ($checkins as $checkin) {
             $checkedInMemberIds[] = $checkin['member_id'];
         }
+        $event['checkins'] = array();
         foreach ($rsvps as $rsvp) {
             if (in_array($rsvp['member']['member_id'], $checkedInMemberIds)) {
                 $event['checkins'][] = array(

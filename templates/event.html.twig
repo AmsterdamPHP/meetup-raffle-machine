@@ -6,10 +6,14 @@
 
     <h2 class="title">{{ event.name }}</h2>
 
+
     <div class="checkins">
         {% for checkin in event.checkins %}
-        <div class="checkin" style="background-image: url('{{ checkin.photo.photo_link }}');"></div>
+            <div class="checkin" style="background-image: url('{{ checkin.photo.photo_link }}');"></div>
         {% endfor %}
+        {% if event.checkins is empty %}
+            <p class="no-checkins">Oh noes! No checkins!</p>
+        {% endif %}
     </div>
 
 {% endblock %}
