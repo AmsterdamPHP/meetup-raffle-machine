@@ -1,159 +1,137 @@
-function Raffler(membersList, actionButton, clearButton, resultDiv) {
+/**
+ * Main object.
+ */
+var Raffler = {
+    /**
+     * The delay between highlighting each checkin.
+     */
+    highlightDelay: 0,
 
-	this.participants     = membersList;
-	this.resultDiv        = $(resultDiv);
-	this.winnerAvailable  = false;
+    /**
+     * The current hightlight cycle.
+     */
+    currentCycle: 0,
 
-	this.currentCycle;
-	this.callInterval;
-	this.totalCycles;
-	this.winner;
-	this.wIntervalId;
-	this.sIntervalId;
+    /**
+     * Array of truely random numbers from random.org. This is populated
+     * on page load. We select the winners from this array.
+     */
+    winners: [],
 
-	// Bind Start Button
-	$(actionButton).click(this.startBtnAction.bind(this));
+    /**
+     * Current state we are in. One of "start", "raffling", "winner"
+     */
+    state: 'start',
 
-	// Bind Clear Button
-    $(clearButton).click(this.clearWinnersBtnAction.bind(this));
-}
+    /**
+     * Initialize
+     */
+    init: function() {
+        $(document).on('keydown', Raffler.onKeyDown);
+    },
 
-Raffler.prototype.start = function () {
-    this.callInterval = 100;
-    this.totalCycles = 100;
-    this.currentCycle = 0;
+    /**
+     * On key down handler.
+     */
+    onKeyDown: function(e) {
+        // We only handle the space (32) and page down (34) keys. Page down is enabled because
+        // presentation remotes emit page down on the "next" button
+        if (e.keyCode != 32 && e.keyCode != 34) {
+            return;
+        }
 
-    //Get a Winner
-    this.selectWinner();
+        // If we are in start state, start the raffler
+        if (Raffler.state == 'start') {
+            Raffler.raffle();
+        }
 
-    //Kickoff Animation
-    this.setAnimationInterval(this.callInterval);
-    this.setWinnerInterval(this.callInterval, this.totalCycles);
-};
+        // If we are raffling, do nothing.
+        if (Raffler.state == 'raffling') {
+            return;
+        }
 
-Raffler.prototype.cycle = function()
-{
-	var participant;
+        // If we are showing the winner, reset the state
+        if (Raffler.state == 'winner') {
+            Raffler.resetRaffler();
+        }
+    },
 
-	this.currentCycle++;
+    /**
+     * Raffle.
+     */
+    raffle: function () {
+        Raffler.state = 'raffling';
+        Raffler.highlightRandomCheckin();
+    },
 
-	// Animation: Select a participant and highlight him
-	participant = this.randomParticipant();
-	this.highlightParticipant(participant);
+    /**
+     * Present a winner.
+     */
+    showWinner: function() {
+        // Change state
+        Raffler.state = 'winner';
 
-	// Adjust speed (slower towards end)
-	this.adjustSpeed();
-};
+        // Hide all checkins
+        $('.checkin').addClass('loser', 1000);
 
-Raffler.prototype.adjustSpeed = function()
-{
-	var modifier, growthPct, linearMultiplier;
+        // Show winner
+        var winner = $('.checkin').eq(Raffler.winners.pop());
+        winner.switchClass('loser', 'winner', 200);
+    },
 
-    modifier         = (this.currentCycle / this.totalCycles);
-    growthPct        = 1 + modifier;
-    linearMultiplier = 80 / (modifier * 100);
+    /**
+     * Reset raffler
+     */
+    resetRaffler: function() {
+        // Reset cycles and delay
+        Raffler.currentCycle = 0;
+        Raffler.highlightDelay = 0;
 
-	// Update interval to new value
-    this.callInterval = this.callInterval * growthPct + (linearMultiplier * modifier);
+        // Reset styles
+        $('.checkin').removeClass('loser');
+        $('.checkin').removeClass('winner');
 
-	// Set new interval
-    clearInterval(this.sIntervalId);
-	this.setAnimationInterval(this.callInterval);
-};
+        // Reset state
+        Raffler.state = 'start';
+    },
 
-Raffler.prototype.selectWinner = function()
-{
-    var min = 0, max, url;
+    /**
+     * Highlight random checkin.
+     */
+    highlightRandomCheckin: function() {
+        // Abort if we have reached 50 cycles
+        if (50 <= Raffler.currentCycle) {
+            Raffler.showWinner();
+            return;
+        }
 
-    max = this.participants.length;
+        // Increase the current highlight cycle
+        Raffler.currentCycle++;
 
-    url = "http://www.random.org/integers/?num=1&min="+min+"&max="+max+"&col=1&base=10&format=plain&rnd=new"
+        // Adjust the highlight delay
+        Raffler.highlightDelay = Math.pow(1.14, Raffler.currentCycle);
 
-    $.get(url, function(data){
-        this.winner = $(this.participants[parseInt(data)])[0];
+        // Get random person to highlight
+        checkin = Raffler.getRandomCheckin();
 
-		this.winnerAvailable = true;
-    }.bind(this));
-};
+        // Highlight, delay, unhighlight
+        checkin.addClass('selected', Raffler.highlightDelay, Raffler.unhighlightCurrentCheckin);
+    },
 
-Raffler.prototype.showWinner = function()
-{
-    var $winner, html;
+    /**
+     * Unhighlight current checkin
+     */
+    unhighlightCurrentCheckin: function() {
+        // Unhighlight this checkin and recurse back to highlighting another
+        // random checkin
+        $(this).removeClass('selected', Raffler.highlightDelay, Raffler.highlightRandomCheckin);
+    },
 
-    //Still waiting for winner, animate some more
-    if (this.winnerAvailable == undefined) {
-
-		this.setWinnerInterval(this.callInterval, 10);
-
-		return;
+    /**
+     * Get random checkin.
+     */
+    getRandomCheckin: function() {
+        var random = Math.floor(Math.random() * $('.checkin').size());
+        return($('.checkin').eq(random));
     }
-
-	// Highlight Winner first
-	this.highlightParticipant($(this.winner));
-
-    //Show winner
-    $winner = $(this.winner).clone();
-    $winner.attr('src', $winner.attr('data-big-src'));
-    $winner.removeClass('thumb').addClass('photo').removeClass('img-rounded');
-
-    html = "<div class=\"winner\">"+ $winner[0].outerHTML +"<div class=\"name\">"+$winner.attr('alt')+"</div></div>";
-
-    this.resultDiv.find('.modal-body').html(html);
-
-    this.resultDiv.modal();
-
-    clearInterval(this.sIntervalId);
-	clearInterval(this.wIntervalId);
-};
-
-Raffler.prototype.randomParticipant = function()
-{
-	var rnd = Math.floor(Math.random() * this.participants.length);
-
-	return this.participants[rnd];
-};
-
-Raffler.prototype.highlightParticipant = function(participant)
-{
-
-    var animateOn, animateOff,
-        animtime = 50,
-        delay = this.callInterval - (animtime * 2);
-
-    animateOn = {
-        borderColor: "#333333",
-        backgroundColor: "#CC0000",
-        opacity: 1
-    };
-
-    animateOff = {
-        borderColor: "#FFF",
-        backgroundColor: "#FFF",
-        opacity: 1
-    };
-
-    $(participant).animate(animateOn, animtime).delay(delay).animate(animateOff, animtime);
-};
-
-Raffler.prototype.clearWinnersBtnAction = function (event) {
-	event.preventDefault();
-	this.resultDiv.html('').hide("fast");
-};
-
-Raffler.prototype.startBtnAction = function (event) {
-	event.preventDefault();
-	this.start();
-};
-
-Raffler.prototype.setAnimationInterval = function (interval) {
-	this.sIntervalId = setInterval(this.cycle.bind(this), interval);
-};
-
-Raffler.prototype.setWinnerInterval = function (interval, totalCycles) {
-
-    if (totalCycles == undefined) {
-        totalCycles = 10;
-    }
-
-    this.wIntervalId = setInterval(this.showWinner.bind(this), interval * totalCycles);
 };

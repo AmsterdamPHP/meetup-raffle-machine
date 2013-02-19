@@ -1,0 +1,122 @@
+$total-columns: 12;
+$column-width:  4em;
+$gutter-width:  1em;
+$grid-padding:  $gutter-width;
+
+/* compass */
+@import "compass/reset";
+@import "compass/css3";
+
+/* other plugins */
+@import "susy";
+
+body {
+    color: #ffffff;
+    background: #000000;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.container {
+    @include container;
+}
+
+.logo {
+    margin: 1em 0 0 0;
+    text-align: center;
+    line-height: 120px;
+
+    a {
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+    .primary {
+        display: inline-block;
+        width: 444px;
+        height: 80px;
+        text-indent: -9999px;
+        background-image: url("/img/logo.png");
+    }
+    .secondary {
+        display: inline-block;
+        font-size: 65px;
+        font-style: italic;
+    }
+}
+
+.title {
+    margin: 0 0 1.5em 0;
+    font-size: 40px;
+    text-align: center;
+}
+
+.meetups {
+    li {
+        font-size: 20px;
+    }
+
+    a {
+        background: #1a1a1a;
+        display: block;
+        color: #fff;
+        text-decoration: none;
+        padding: 0.5em;
+        margin-bottom: 1px;
+
+        &:hover {
+            background: #212121;
+        }
+    }
+
+    .first a {
+        color: rgba(179, 255, 151, 1.0);
+        text-shadow: 0 -1px 0 #000,0px 0 5px rgba(179,255,151,.8);
+        font-size: 1.2em;
+    }
+}
+
+.checkins {
+    text-align: center;
+
+    .checkin {
+        @include border-radius(16px, 16px);
+        border: 8px solid #000;
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        margin: 0 1em 1em 0;
+        background-position: center;
+        background-size: cover;
+        text-align: center;
+
+        .name {
+            display: none;
+        }
+
+        &.selected {
+            border-color: #f00;
+        }
+
+        &.loser {
+            display: none;
+            opacity: 0;
+        }
+
+        &.winner {
+            position: relative;
+            border: 0;
+            width: 300px;
+            height: 300px;
+
+            .name {
+                position: absolute;
+                top: 315px;
+                width: 100%;
+                display: block;
+                font-size: 2em;
+            }
+        }
+    }
+}

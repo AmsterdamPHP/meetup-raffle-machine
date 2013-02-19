@@ -6,6 +6,8 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 
 use Symfony\Component\Yaml\Yaml;
+use Raffle\MeetupService;
+use Raffle\RandomService;
 
 $app = new Application();
 
@@ -19,14 +21,17 @@ $app->register(new TwigServiceProvider(), array(
     'twig.path'    => array(__DIR__.'/../templates'),
     'twig.options' => array('cache' => __DIR__.'/../cache'),
 ));
-$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
-    // add custom globals, filters, tags, ...
-
+$app['twig'] = $app->share($app->extend('twig', function($twig) {
     return $twig;
 }));
 
-$app['redis'] = new Predis\Client();
+// Meetup service
+$app['meetup'] = new MeetupService(
+    new MeetupKeyAuthConnection($app['config']['meetup_api_key']),
+    $app['config']['meetup_group']
+);
 
-$app['meetup'] = $connection = new MeetupKeyAuthConnection($app['config']['meetup_api_key']);
+// Random service
+$app['random'] = new RandomService();
 
 return $app;
