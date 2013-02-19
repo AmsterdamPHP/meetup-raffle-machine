@@ -21,11 +21,23 @@ var Raffler = {
      * Initialize
      */
     init: function() {
-        $(document).on('keydown', function(e) {
-            if (e.keyCode == 32 && !Raffler.cycling) {
-                Raffler.raffle();
-            }
-        });
+        $(document).on('keydown', Raffler.onKeyDown);
+    },
+
+    /**
+     * On key down handler.
+     */
+    onKeyDown: function(e) {
+        // Do nothing if the raffler is running
+        if (Raffler.cycling) {
+            return;
+        }
+
+        // Raffle on space(32) and page down (34). Page down is enabled because
+        // presentation remotes emit page down on the "next" button
+        if (e.keyCode == 32 || e.keyCode == 34) {
+            Raffler.raffle();
+        }
     },
 
     /**
