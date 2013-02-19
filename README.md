@@ -2,6 +2,16 @@
 
 This application enables us to raffle off stuff to our meetup attendees. It uses the Meetup.com API to get all check ins, and then uses the Random.org API to randomly select winners.
 
+## Dependencies
+
+This app depends on compass and susy. You can install them as follows:
+
+    ```
+    gem update --system
+    gem install compass
+    gem install susy
+    ```
+
 ## Installation
 
 1. Get code
