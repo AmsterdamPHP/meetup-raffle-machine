@@ -6,11 +6,9 @@ This application enables us to raffle off stuff to our meetup attendees. It uses
 
 This app depends on compass and susy. You can install them as follows:
 
-    ```
     gem update --system
     gem install compass
     gem install susy
-    ```
 
 ## Installation
 
