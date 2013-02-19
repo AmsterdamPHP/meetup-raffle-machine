@@ -13,9 +13,15 @@ var Raffler = {
     currentCycle: 0,
 
     /**
-     * Whether we are cycling.
+     * Array of truely random numbers from random.org. This is populated
+     * on page load. We select the winners from this array.
      */
-    cycling: false,
+    winners: [],
+
+    /**
+     * Current state we are in. One of "start", "raffling", "winner"
+     */
+    state: 'start',
 
     /**
      * Initialize
@@ -28,15 +34,25 @@ var Raffler = {
      * On key down handler.
      */
     onKeyDown: function(e) {
-        // Do nothing if the raffler is running
-        if (Raffler.cycling) {
+        // We only handle the space (32) and page down (34) keys. Page down is enabled because
+        // presentation remotes emit page down on the "next" button
+        if (e.keyCode != 32 && e.keyCode != 34) {
             return;
         }
 
-        // Raffle on space(32) and page down (34). Page down is enabled because
-        // presentation remotes emit page down on the "next" button
-        if (e.keyCode == 32 || e.keyCode == 34) {
+        // If we are in start state, start the raffler
+        if (Raffler.state == 'start') {
             Raffler.raffle();
+        }
+
+        // If we are raffling, do nothing.
+        if (Raffler.state == 'raffling') {
+            return;
+        }
+
+        // If we are showing the winner, reset the state
+        if (Raffler.state == 'winner') {
+            Raffler.resetRaffler();
         }
     },
 
@@ -44,13 +60,39 @@ var Raffler = {
      * Raffle.
      */
     raffle: function () {
-        // Reset state
+        Raffler.state = 'raffling';
+        Raffler.highlightRandomCheckin();
+    },
+
+    /**
+     * Present a winner.
+     */
+    showWinner: function() {
+        // Change state
+        Raffler.state = 'winner';
+
+        // Hide all checkins
+        $('.checkin').addClass('loser', 1000);
+
+        // Show winner
+        var winner = $('.checkin').eq(Raffler.winners.pop());
+        winner.switchClass('loser', 'winner', 200);
+    },
+
+    /**
+     * Reset raffler
+     */
+    resetRaffler: function() {
+        // Reset cycles and delay
         Raffler.currentCycle = 0;
         Raffler.highlightDelay = 0;
 
-        // Start cycling
-        Raffler.cycling = true;
-        Raffler.highlightRandomCheckin();
+        // Reset styles
+        $('.checkin').removeClass('loser');
+        $('.checkin').removeClass('winner');
+
+        // Reset state
+        Raffler.state = 'start';
     },
 
     /**
@@ -59,7 +101,7 @@ var Raffler = {
     highlightRandomCheckin: function() {
         // Abort if we have reached 50 cycles
         if (50 <= Raffler.currentCycle) {
-            Raffler.cycling = false;
+            Raffler.showWinner();
             return;
         }
 

@@ -9,7 +9,9 @@
 
     <div class="checkins">
         {% for checkin in event.checkins %}
-            <div class="checkin" style="background-image: url('{{ checkin.photo.photo_link }}');"></div>
+            <div class="checkin" style="background-image: url('{{ checkin.photo.photo_link }}');">
+                <span class="name">{{ checkin.name }}</span>
+            </div>
         {% endfor %}
         {% if event.checkins is empty %}
             <p class="no-checkins">Oh noes! No checkins!</p>
@@ -23,6 +25,9 @@
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js"></script>
     <script src="/js/raffler.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
-        $(function() { Raffler.init(); });
+        $(function() {
+            Raffler.init();
+            Raffler.winners = {{ winners|json_encode|raw }}
+        });
     </script>
 {% endblock %}

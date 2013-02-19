@@ -81,8 +81,8 @@ body {
     text-align: center;
 
     .checkin {
-        @include border-radius(8px, 8px);
-        border: 4px solid #000;
+        @include border-radius(16px, 16px);
+        border: 8px solid #000;
         display: inline-block;
         width: 100px;
         height: 100px;
@@ -91,8 +91,32 @@ body {
         background-size: cover;
         text-align: center;
 
+        .name {
+            display: none;
+        }
+
         &.selected {
             border-color: #f00;
+        }
+
+        &.loser {
+            display: none;
+            opacity: 0;
+        }
+
+        &.winner {
+            position: relative;
+            border: 0;
+            width: 300px;
+            height: 300px;
+
+            .name {
+                position: absolute;
+                top: 315px;
+                width: 100%;
+                display: block;
+                font-size: 2em;
+            }
         }
     }
 }

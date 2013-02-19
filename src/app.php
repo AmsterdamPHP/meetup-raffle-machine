@@ -7,6 +7,7 @@ use Silex\Provider\ValidatorServiceProvider;
 
 use Symfony\Component\Yaml\Yaml;
 use Raffle\MeetupService;
+use Raffle\RandomService;
 
 $app = new Application();
 
@@ -26,7 +27,11 @@ $app['twig'] = $app->share($app->extend('twig', function($twig) {
 
 // Meetup service
 $app['meetup'] = new MeetupService(
-    new MeetupKeyAuthConnection($app['config']['meetup_api_key'])
+    new MeetupKeyAuthConnection($app['config']['meetup_api_key']),
+    $app['config']['meetup_group']
 );
+
+// Random service
+$app['random'] = new RandomService();
 
 return $app;
