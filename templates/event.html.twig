@@ -1,87 +1,33 @@
 {% extends "layout.html.twig" %}
 
-{% set activePage = 'event' %}
-
 {% block title event.name %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ event.name }}</h1>
-    </div>
-    <div class="row raffle">
-        <div class="span12">
-            <div class="btn-group">
-                <a id="pick-winner" href="" class="btn btn-inverse"><i class="icon-gift icon-white"></i> Pick a random winner</a>
-                <a  href="#adduser_modal" role="button" class="btn btn-success" data-toggle="modal"><i class="icon-plus icon-white"></i> I'm not here, add me!</a>
-            </div>
 
-        </div>
-    </div>
-    <div class="row result">
-        <div id="raffle-result" class="modal hide fade">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h3 id="myModalLabel">And the winner is...</h3>
-            </div>
-            <div class="modal-body">
+    <h2 class="title">{{ event.name }}</h2>
 
-            </div>
-            <div class="modal-footer">
-              <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="span12">
-            <h2>Attendees</h2>
-            <p>
-                {% for member in members %}
-                    <img id="member-{{ member.member.member_id|default('--') }}" 
-                         src="{{ member.member_photo.thumb_link|default('') }}" 
-                         title="{{ member.member.name|default('unknown')}}" 
-                         alt="{{ member.member.name|default('unknown') }}" 
-                         class="thumb img-rounded" 
-                         data-big-src="{{ member.member_photo.highres_link|default(member.member_photo.thumb_link|default('')) }}">
-                {% endfor %}
-            </p>
-        </div>
-    </div>
 
-    <div id="adduser_modal" class="modal hide fade">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>Add user</h3>
-      </div>
-      <div class="modal-body">
-          <form id="adduser" action="/event/{{event.id}}/adduser" method="POST" class="form-horizontal">
-
-            <div class="control-group">
-                <label class="control-label" for="email">Email</label>
-                <div class="controls">
-                    <input type="text" name="email" value="" id="email">
-                    <span class="help-block™">bonus points for <a href="http://gravatar.com">gravatar.com</a> account.</span>
-                </div>
-
+    <div class="checkins">
+        {% for checkin in event.checkins %}
+            <div class="checkin" style="background-image: url('{{ checkin.photo.photo_link }}');">
+                <span class="name">{{ checkin.name }}</span>
             </div>
-            <div class="control-group">
-                <label class="control-label" for="name">Name</label>
-                <div class="controls">
-                    <input type="text" name="name" value="" id="name">
-                </div>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn btn-primary">Add me!</button>
-              <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            </div>
-          </form>
-      </div>
+        {% endfor %}
+        {% if event.checkins is empty %}
+            <p class="no-checkins">Oh noes! No checkins!</p>
+        {% endif %}
     </div>
 
 {% endblock %}
 
 {% block javascripts %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js"></script>
     <script src="/js/raffler.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
-        var raffler = new Raffler($('.thumb'), '#pick-winner', '#clear-winners', '#raffle-result' );
+        $(function() {
+            Raffler.init();
+            Raffler.winners = {{ winners|json_encode|raw }}
+        });
     </script>
 {% endblock %}

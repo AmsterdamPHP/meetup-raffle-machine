@@ -6,82 +6,26 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-define('GRAVATAR_URL', "http://www.gravatar.com/avatar/%s%s");
-
+// Event index
 $app->get('/', function () use ($app) {
-
-    $m = new MeetupEvents($app['meetup']);
-    $pastEvents     = $m->getEvents( array( 'group_urlname' => 'amsterdamphp', 'status' => 'past')  );
-    $upcomingEvents = $m->getEvents( array( 'group_urlname' => 'amsterdamphp', 'status' => 'upcoming')  );
-
-    $dateOfFirst = DateTime::createFromFormat('U', ($upcomingEvents[0]['time']/1000));
-
-    $current = ($dateOfFirst->format('Ymd') == date('Ymd'))?  array_shift($upcomingEvents) : null;
-
-    return $app['twig']->render('index.html.twig', array('past' => $pastEvents, 'upcoming' => $upcomingEvents, 'current' => $current));
-})
-->bind('homepage')
-;
-
-$app->get('/event/{id}', function ($id) use ($app) {
-
-    $eventApi = new MeetupEvents($app['meetup']);
-    $event = $eventApi->getEvent($id, array());
-
-    $rsvpApi = new MeetupRsvps($app['meetup']);
-    $meetupMembers = $rsvpApi->getRsvps(array('event_id' => $id, 'rsvp' => 'yes'));
-
-    //Get Manual Users
-    $userList = $app['redis']->lrange('event:'.$id, 0, 1000);
-    $userList = array_map(function ($v) { return json_decode($v); }, $userList);
-
-    $members = array_merge($meetupMembers, $userList);
-
-    return $app['twig']->render('event.html.twig', array('event' => $event, 'members' => $members));
-})
-->bind('event')
-;
-
-$app->post('/event/{id}/adduser', function ($id, Request $request) use ($app) {
-
-    /** @var $redis \Predis\Client */
-    $redis = $app['redis'];
-
-    //Store User
-    $emailHash = md5($request->get('email'));
-    $userId = 'user:' . $emailHash;
-
-    $user = array(
-        'member' => array(
-            'name' => $request->get('name'),
-            'member_id' => $userId
-            ),
-        'member_photo' => array(
-            'thumb_link' => sprintf(GRAVATAR_URL, $emailHash, '?s=80'),
-            'highres_link' => sprintf(GRAVATAR_URL, $emailHash, '?s=200'),
-        )
+    return $app['twig']->render(
+        'index.html.twig',
+        array('meetups' => $app['meetup']->getEvents())
     );
+})->bind('homepage');
 
-    $redis->set($userId, json_encode($user));
+// Specific event
+$app->get('/event/{id}', function ($id) use ($app) {
+    $event = $app['meetup']->getEvent($id);
+    $winners = $app['random']->getRandomNumbers(0, count($event['checkins']) - 1, 100);
 
-    //Add user to event
-    $redis->rpush('event:'.$id, json_encode($user));
+    return $app['twig']->render(
+        'event.html.twig',
+        array('event' => $event, 'winners' => $winners)
+    );
+})->bind('event');
 
-    //return new JsonResponse(array("User Added."), 200);
-    return new RedirectResponse("/event/".$id);
-});
-
-$app->get('/event/{id}/removeuser/{userId}', function ($id, $userId) use ($app) {
-
-    /** @var $redis \Predis\Client */
-    $redis = $app['redis'];
-
-    //Add user to event
-    $redis->lrem('event:'.$id, 0, $userId);
-
-    return new JsonResponse(array("User Removed: $userId."), 200);
-});
-
+// Error page
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {
         return;

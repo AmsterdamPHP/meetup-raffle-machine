@@ -1,6 +1,8 @@
 .idea
+.sass-cache
 /vendor/
 /cache/
+/web/css/
 silex.log
 /config/parameters.yml
 
