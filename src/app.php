@@ -24,8 +24,7 @@ $app['twig'] = $app->share($app->extend('twig', function($twig) {
     return $twig;
 }));
 
-$app['redis'] = new Predis\Client();
-
+// Meetup service
 $app['meetup'] = new MeetupService(
     new MeetupKeyAuthConnection($app['config']['meetup_api_key'])
 );
