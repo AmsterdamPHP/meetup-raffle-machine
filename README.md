@@ -12,7 +12,7 @@ This application enables us to raffle off stuff to our meetup attendees. It uses
     sudo chmod -Rf +a "<apache user> allow delete,write,append,file_inherit,directory_inherit" cache logs
     ```
 
-3. Run compile stylesheets
+3. Compile stylesheets
 
     ```
     compass compile
