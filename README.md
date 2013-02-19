@@ -26,8 +26,8 @@ This application enables us to raffle off stuff to our meetup attendees. It uses
     ```
 
 ## How to use it
-1. Open the application in your web browser. You are presented with a list of meetups. The list includes meetups in the past and up to one day in the future.
-2. Select a meetup.
+1. Open the app index page to be presented with a list of meetups.
+2. Click on a meetup.
 3. Press [space] or [page down] to start raffles.
 
 The page down key allows us to use most presentation remotes as well.
