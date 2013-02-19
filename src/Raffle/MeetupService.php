@@ -5,11 +5,6 @@ namespace Raffle;
 class MeetupService
 {
     /**
-     * Group name.
-     */
-    const GROUP = 'amsterdamphp';
-
-    /**
      * Meetup connection
      *
      * @var MeetupConnection
@@ -17,14 +12,23 @@ class MeetupService
     protected $connection;
 
     /**
+     * Meetup group
+     *
+     * @var string
+     */
+    protected $group;
+
+    /**
      * Constructor. Sets dependencies.
      *
      * @param \MeetupConnection $connection
+     * @param string $group
      * @return void
      */
-    public function __construct(\MeetupConnection $connection)
+    public function __construct(\MeetupConnection $connection, $group)
     {
         $this->connection = $connection;
+        $this->group      = $group;
     }
 
     /**
@@ -39,7 +43,7 @@ class MeetupService
         // Fetch past and future events (only upcoming contains the current event)
         $events = $eventsRequest->getEvents(
             array(
-                'group_urlname' => self::GROUP,
+                'group_urlname' => $this->group,
                 'status' => 'past,upcoming',
                 'desc' => 'desc'
             )
