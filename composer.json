@@ -29,7 +29,8 @@
         "symfony/validator":      "2.1.*",
         "symfony/yaml":           "2.1.*",
 
-        "blobaugh/meetup-api-client": "dev-master"
+        "blobaugh/meetup-api-client": "dev-master",
+        "kriswallsmith/buzz": "*@dev"
 
     },
 

@@ -25,6 +25,33 @@ $app->get('/event/{id}', function ($id) use ($app) {
     );
 })->bind('event');
 
+// Check-in page for Event
+$app->get('/event/{id}/checkin', function ($id) use ($app) {
+    $event = $app['meetup']->getEvent($id);
+
+    return $app['twig']->render(
+        'event_checkin.html.twig',
+        array('event' => $event)
+    );
+})->bind('event_checkin');
+
+// Checks a user into an event
+$app->post('/user/checkin', function (Request $request) use ($app) {
+
+    $userId = $request->get('user_id');
+    $eventId = $request->get('event_id');
+
+    $operation = $app['meetup']->checkUserIn($eventId, $userId);
+
+    $httpCode = ($operation)? 200:500;
+
+    return new Response(
+        json_encode(array('result' => $operation)),
+        $httpCode,
+        array('Content-Type' => 'application/json')
+    );
+})->bind('user_checkin');
+
 // Error page
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {

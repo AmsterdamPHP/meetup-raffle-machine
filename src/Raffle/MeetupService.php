@@ -2,6 +2,10 @@
 
 namespace Raffle;
 
+use Buzz\Client\Curl;
+use Buzz\Message\Request;
+use Buzz\Message\Response;
+
 class MeetupService
 {
     /**
@@ -76,7 +80,7 @@ class MeetupService
         // Fetch, event, checkins and RSVPs (only the latter has pictures)
         $event = $eventsRequest->getEvent($id, array());
         $checkins = $checkinsRequest->getCheckins(array('event_id' => $id));
-        $rsvps = $rsvpsRequest->getRsvps(array('event_id' => $id));
+        $rsvps = $rsvpsRequest->getRsvps(array('event_id' => $id, 'rsvp' => 'yes', 'order' => 'name'));
 
         // Intersect the RSVPs with the checkins and add them to the event array
         $checkedInMemberIds = array();
@@ -84,6 +88,7 @@ class MeetupService
             $checkedInMemberIds[] = $checkin['member_id'];
         }
         $event['checkins'] = array();
+        $event['rsvps']    = array();
         foreach ($rsvps as $rsvp) {
             if (in_array($rsvp['member']['member_id'], $checkedInMemberIds)) {
                 $event['checkins'][] = array(
@@ -92,8 +97,62 @@ class MeetupService
                     'photo' => $rsvp['member_photo']
                 );
             }
+
+            $event['rsvps'][] = array(
+                'id'        => $rsvp['member']['member_id'],
+                'name'      => $rsvp['member']['name'],
+                'photo'     => $rsvp['member_photo'],
+                'checkedIn' => in_array($rsvp['member']['member_id'], $checkedInMemberIds)
+            );
         }
 
         return $event;
+    }
+
+    /**
+     * Allows and Admin to check a user into an event
+     *
+     * API Client has no support for POST, so we use Buzz.
+     *
+     * @param string $eventId
+     * @param string $userId
+     * @return bool
+     */
+    public function checkUserIn($eventId, $userId)
+    {
+        $params = array(
+            'event_id' => $eventId,
+            'attendee_member_id' => $userId,
+        );
+        $params = $this->connection->modify_params($params);
+
+        $url = MEETUP_API_URL . '/2/checkin';
+
+        $request = new Request('POST');
+        $request->fromUrl($url);
+        $request->setContent($params);
+
+        $response =  $this->sendPostRequest($request);
+
+        if ($response->getStatusCode() != 201) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $request
+     * @return \Buzz\Message\Response
+     */
+    private function sendPostRequest($request)
+    {
+        $client = new Curl();
+
+        $response = new Response();
+
+        $client->send($request, $response);
+
+        return $response;
     }
 }
