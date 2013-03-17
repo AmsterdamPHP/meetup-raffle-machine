@@ -70,7 +70,7 @@ class MeetupService
         // Fetch, event, checkins and RSVPs (only the latter has pictures)
         $event    = $this->client->getEvent(array('id' => $id));
         $checkins = $this->client->getCheckins(array('event_id' => $id));
-        $rsvps    = $this->client->getRSVPs(array('event_id' => $id, 'rsvp' => 'yes', 'order' => 'name')));
+        $rsvps    = $this->client->getRSVPs(array('event_id' => $id, 'rsvp' => 'yes', 'order' => 'name'));
 
         // Intersect the RSVPs with the checkins and add them to the event array
         $checkedInMemberIds = array();
@@ -113,7 +113,7 @@ class MeetupService
     public function checkUserIn($eventId, $userId)
     {
         $params = array(
-            'event_id' => $eventId,
+            'event_id'           => $eventId,
             'attendee_member_id' => $userId,
         );
 
