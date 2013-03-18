@@ -44,12 +44,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rdohms/meetup-api-client.git",
-                "reference": "6dee3575ae783c1b7db3caab9a7756ed55db7668"
+                "reference": "68dfaa25c487cc22593922e844f9221d02dc600f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rdohms/meetup-api-client/zipball/6dee3575ae783c1b7db3caab9a7756ed55db7668",
-                "reference": "6dee3575ae783c1b7db3caab9a7756ed55db7668",
+                "url": "https://api.github.com/repos/rdohms/meetup-api-client/zipball/68dfaa25c487cc22593922e844f9221d02dc600f",
+                "reference": "68dfaa25c487cc22593922e844f9221d02dc600f",
                 "shasum": ""
             },
             "require": {
@@ -88,7 +88,7 @@
                 "dms",
                 "meetup.com"
             ],
-            "time": "2013-03-17 22:49:14"
+            "time": "2013-03-18 14:19:49"
         },
         {
             "name": "guzzle/guzzle",
