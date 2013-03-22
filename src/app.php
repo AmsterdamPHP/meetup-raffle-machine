@@ -1,5 +1,6 @@
 <?php
 
+use DMS\Service\Meetup\MeetupKeyAuthClient;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
@@ -26,8 +27,9 @@ $app['twig'] = $app->share($app->extend('twig', function($twig) {
 }));
 
 // Meetup service
+$config = array('key' => $app['config']['meetup_api_key']);
 $app['meetup'] = new MeetupService(
-    new MeetupKeyAuthConnection($app['config']['meetup_api_key']),
+    MeetupKeyAuthClient::factory($config),
     $app['config']['meetup_group']
 );
 
