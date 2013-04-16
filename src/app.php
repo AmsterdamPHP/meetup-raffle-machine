@@ -1,6 +1,7 @@
 <?php
 
 use DMS\Service\Meetup\MeetupKeyAuthClient;
+use Raffle\MeetupOauthHandler;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
@@ -25,6 +26,13 @@ $app->register(new TwigServiceProvider(), array(
 $app['twig'] = $app->share($app->extend('twig', function($twig) {
     return $twig;
 }));
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
+// Session
+$app->register(new Silex\Provider\SessionServiceProvider());
+
+// Meetup Oauth Handler
+$app['meetup_oauth_handler'] = new MeetupOauthHandler($app);
 
 // Meetup service
 $config = array('key' => $app['config']['meetup_api_key']);
