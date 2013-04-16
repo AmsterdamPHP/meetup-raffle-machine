@@ -31,7 +31,7 @@ class MeetupService
     public function __construct(AbstractMeetupClient $client, $group)
     {
         $this->client = $client;
-        $this->group      = $group;
+        $this->group  = $group;
     }
 
     /**
@@ -93,7 +93,7 @@ class MeetupService
             $event['rsvps'][] = array(
                 'id'        => $rsvp['member']['member_id'],
                 'name'      => $rsvp['member']['name'],
-                'photo'     => $rsvp['member_photo'],
+                'photo'     => isset($rsvp['member_photo']) ? $rsvp['member_photo'] : null,
                 'checkedIn' => in_array($rsvp['member']['member_id'], $checkedInMemberIds)
             );
         }
@@ -124,5 +124,13 @@ class MeetupService
         }
 
         return true;
+    }
+
+    /**
+     * @return \DMS\Service\Meetup\AbstractMeetupClient
+     */
+    public function getClient()
+    {
+        return $this->client;
     }
 }
