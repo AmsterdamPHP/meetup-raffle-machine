@@ -7,7 +7,7 @@ class RandomService
     /**
      * Base URL
      */
-    const BASE_URL = 'http://www.random.org/integers/?min=%d&max=%d&num=%d&col=1&base=10&format=plain&rnd=new';
+	const BASE_URL = 'http://www.random.org/integer-sets/?sets=1&min=%d&max=%d&num=%d&order=random&format=plain&rnd=new';
 
     /**
      * Retrieve a block of random numbers.
@@ -29,6 +29,6 @@ class RandomService
         $data = curl_exec($ch);
 
         // Decode data and return
-        return explode("\n", trim($data));
+        return explode(" ", trim($data));
     }
 }
