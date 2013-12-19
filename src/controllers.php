@@ -1,5 +1,6 @@
 <?php
 
+use Predis\Client;
 use Raffle\MeetupOauthHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,52 +20,46 @@ $app->get('/', function () use ($app) {
 // Specific event
 $app->get('/event/{id}', function ($id) use ($app) {
     $event = $app['meetup']->getEvent($id);
-    $winners = $app['random']->getRandomNumbers(0, count($event['checkins']) - 1, 100);
+
+    $client = new Client();
+    $checkins = $client->lrange('checkin_'.$id, 0, 300);
+
+    $winners = $app['random']->getRandomNumbers(0, count($checkins) - 1, 100);
 
     return $app['twig']->render(
         'event.html.twig',
-        array('event' => $event, 'winners' => $winners)
+        array('event' => $event, 'winners' => $winners, 'checkins' => $checkins)
     );
 })->bind('event');
 
 // Check-in page for Event
 $app->get('/event/{id}/checkin', function ($id, Request $request) use ($app) {
 
-    /** @var MeetupOauthHandler $oauthHandler */
-    $oauthHandler = $app['meetup_oauth_handler'];
-
-    if ( ! $oauthHandler->hasSessionToken()) {
-        $app['session']->set('redirect_url', $request->getUri());
-        return $app->redirect($app['url_generator']->generate('meetup_oauth_authorize'));
-    }
-
     $event = $app['meetup']->getEvent($id);
+    $client = new Client();
+    $checkins = $client->lrange('checkin_'.$id, 0, 300);
 
     return $app['twig']->render(
         'event_checkin.html.twig',
-        array('event' => $event)
+        array('event' => $event, 'checkins' => $checkins)
     );
 })->bind('event_checkin');
 
 // Checks a user into an event
 $app->post('/user/checkin', function (Request $request) use ($app) {
 
-    /** @var MeetupOauthHandler $oauthHandler */
-    $oauthHandler = $app['meetup_oauth_handler'];
-    $meetup       = $oauthHandler->getOauthMeetupService();
-
     $userId = $request->get('user_id');
     $eventId = $request->get('event_id');
 
-    $operation = $meetup->checkUserIn($eventId, $userId);
-
-    $httpCode = ($operation)? 200:500;
+    $client = new Client();
+    $client->lpush('checkin_'.$eventId, $userId);
 
     return new Response(
-        json_encode(array('result' => $operation)),
-        $httpCode,
+        json_encode(array('result' => 'ok')),
+        200,
         array('Content-Type' => 'application/json')
     );
+
 })->bind('user_checkin');
 
 // Error page

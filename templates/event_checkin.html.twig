@@ -9,13 +9,13 @@
 
     <div class="rsvps">
         {% for rsvp in event.rsvps %}
-            <div class="rsvp {{ rsvp.checkedIn ? 'checked_in':'not_checked' }}" data-user-id="{{ rsvp.id }}">
+            <div class="rsvp {{ rsvp.id in checkins ? 'checked_in':'not_checked' }}" data-user-id="{{ rsvp.id }}">
                 <img class="avatar" src="{{ rsvp.photo.photo_link|default('') }}" alt="{{ rsvp.name }}"/>
 
                 <div class="info">
                     <span class="name">{{ rsvp.name }}</span>
                     <span class="status">
-                        {% if rsvp.checkedIn %}
+                        {% if rsvp.id in checkins %}
                             Checked in!
                         {% else %}
                             Not here!
