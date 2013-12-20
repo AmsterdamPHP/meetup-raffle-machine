@@ -6,18 +6,18 @@
 
     <h2 class="title">{{ event.name }}</h2>
 
-
     <div class="checkins">
-        {% for checkin in event.checkins %}
-            <div class="checkin" style="background-image: url('{{ checkin.photo.photo_link }}');">
+        {% for checkin in event.rsvps if checkin.id in checkins %}
+            <div class="checkin" style="background-image: url('{{ checkin.photo.photo_link|default('') }}');">
                 <span class="name">{{ checkin.name }}</span>
             </div>
         {% endfor %}
-        {% if event.checkins is empty %}
+        {% if checkins is empty %}
             <p class="no-checkins">Oh noes! No checkins!</p>
         {% endif %}
     </div>
 
+    <p><a href="{{ path('event_checkin', {id: event.id}) }}">Click here to checkin</a></p>
 {% endblock %}
 
 {% block javascripts %}

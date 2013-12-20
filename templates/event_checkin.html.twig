@@ -1,0 +1,65 @@
+{% extends "layout.html.twig" %}
+
+{% block title event.name %}
+
+{% block content %}
+
+    <h2 class="title">{{ event.name }}</h2>
+
+
+    <div class="rsvps">
+        {% for rsvp in event.rsvps %}
+            <div class="rsvp {{ rsvp.id in checkins ? 'checked_in':'not_checked' }}" data-user-id="{{ rsvp.id }}">
+                <img class="avatar" src="{{ rsvp.photo.photo_link|default('') }}" alt="{{ rsvp.name }}"/>
+
+                <div class="info">
+                    <span class="name">{{ rsvp.name }}</span>
+                    <span class="status">
+                        {% if rsvp.id in checkins %}
+                            Checked in!
+                        {% else %}
+                            Not here!
+                        {% endif %}
+                    </span>
+                </div>
+
+
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js"></script>
+
+    <script>
+        $('.not_checked').bind('click', function(event) {
+
+            var request,
+                params,
+                $rsvpBlock = $(this);
+
+            $rsvpBlock.find('.status').html("<img class='loader' src='/img/loader.gif' width='128'>");
+
+            params = {
+                user_id: $rsvpBlock.attr('data-user-id'),
+                event_id: "{{ event.id }}"
+            };
+
+            request = $.post("/user/checkin", params, function() {
+                $rsvpBlock.find('.status').html("Checked in!");
+                $rsvpBlock.addClass('checked_in');
+                $rsvpBlock.removeClass('not_checked');
+
+                $rsvpBlock.unbind('click');
+            })
+            .fail(function() { $rsvpBlock.find('.status').html("Error checking user in."); });
+
+        });
+    </script>
+{% endblock %}
+
+
+{# order by alphabetical #}

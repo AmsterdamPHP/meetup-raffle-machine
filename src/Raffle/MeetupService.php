@@ -31,7 +31,7 @@ class MeetupService
     public function __construct(AbstractMeetupClient $client, $group)
     {
         $this->client = $client;
-        $this->group      = $group;
+        $this->group  = $group;
     }
 
     /**
@@ -70,7 +70,7 @@ class MeetupService
         // Fetch, event, checkins and RSVPs (only the latter has pictures)
         $event    = $this->client->getEvent(array('id' => $id));
         $checkins = $this->client->getCheckins(array('event_id' => $id));
-        $rsvps    = $this->client->getRSVPs(array('event_id' => $id));
+        $rsvps    = $this->client->getRSVPs(array('event_id' => $id, 'rsvp' => 'yes', 'order' => 'name'));
 
         // Intersect the RSVPs with the checkins and add them to the event array
         $checkedInMemberIds = array();
@@ -80,6 +80,7 @@ class MeetupService
 
         $event = $event->toArray();
         $event['checkins'] = array();
+        $event['rsvps']    = array();
         foreach ($rsvps as $rsvp) {
             if (in_array($rsvp['member']['member_id'], $checkedInMemberIds)) {
                 $event['checkins'][] = array(
@@ -88,8 +89,48 @@ class MeetupService
                     'photo' => $rsvp['member_photo']
                 );
             }
+
+            $event['rsvps'][] = array(
+                'id'        => $rsvp['member']['member_id'],
+                'name'      => $rsvp['member']['name'],
+                'photo'     => isset($rsvp['member_photo']) ? $rsvp['member_photo'] : null,
+                'checkedIn' => in_array($rsvp['member']['member_id'], $checkedInMemberIds)
+            );
         }
 
         return $event;
+    }
+
+    /**
+     * Allows and Admin to check a user into an event
+     *
+     * API Client has no support for POST, so we use Buzz.
+     *
+     * @param string $eventId
+     * @param string $userId
+     * @return bool
+     */
+    public function checkUserIn($eventId, $userId)
+    {
+        $params = array(
+            'event_id'           => $eventId,
+            'attendee_member_id' => $userId,
+        );
+
+        $response = $this->client->postCheckin($params);
+
+        if ($response->getStatusCode() != 201) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @return \DMS\Service\Meetup\AbstractMeetupClient
+     */
+    public function getClient()
+    {
+        return $this->client;
     }
 }
