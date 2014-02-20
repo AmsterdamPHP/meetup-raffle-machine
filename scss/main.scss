@@ -34,8 +34,8 @@ body {
 
     .primary {
         display: inline-block;
-        width: 444px;
-        height: 80px;
+        max-width: 100%;
+        height: auto;
         text-indent: -9999px;
         background-image: url("/img/logo.png");
     }
