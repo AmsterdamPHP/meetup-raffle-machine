@@ -46,7 +46,7 @@ body {
     }
 }
 
-@include at-breakpoint(30em) {
+@include at-breakpoint(0em 20em) {
     .logo {
         line-height: 60px;
 
