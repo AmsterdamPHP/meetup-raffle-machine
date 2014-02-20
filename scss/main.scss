@@ -46,13 +46,14 @@ body {
     }
 }
 
-@include at-breakpoint(0em 20em) {
+@include at-breakpoint(0em 40em) {
     .logo {
         line-height: 60px;
 
         .primary {
             width: 222px;
             height: 40px;
+            background-size: 222px;
         }
         .secondary {
             display: inline-block;
