@@ -8,7 +8,7 @@
 
     <div class="checkins">
         <p class="checkin-link"><a href="{{ path('event_checkin', {id: event.id}) }}">Checkin here</a></p>
-        
+
         {% for checkin in event.rsvps if checkin.id in checkins %}
             <div class="checkin" style="background-image: url('{{ checkin.photo.photo_link|default('') }}');">
                 <span class="name">{{ checkin.name }}</span>
