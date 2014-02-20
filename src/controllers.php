@@ -22,7 +22,7 @@ $app->get('/event/{id}', function ($id) use ($app) {
     $event = $app['meetup']->getEvent($id);
 
     $client = new Client();
-    $checkins = $client->lrange('checkin_'.$id, 0, 300);
+    $checkins = array_filter($client->lrange('checkin_'.$id, 0, 300));
 
     $winners = $app['random']->getRandomNumbers(0, count($checkins) - 1);
 
@@ -37,7 +37,7 @@ $app->get('/event/{id}/checkin', function ($id, Request $request) use ($app) {
 
     $event = $app['meetup']->getEvent($id);
     $client = new Client();
-    $checkins = $client->lrange('checkin_'.$id, 0, 300);
+    $checkins = array_filter($client->lrange('checkin_'.$id, 0, 300));
 
     return $app['twig']->render(
         'event_checkin.html.twig',
