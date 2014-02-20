@@ -47,9 +47,18 @@ body {
 }
 
 @include at-breakpoint(30em) {
-    .title .primary {
-        width: 222px;
-        height: 40px;
+    .logo {
+        line-height: 60px;
+
+        .primary {
+            width: 222px;
+            height: 40px;
+        }
+        .secondary {
+            display: inline-block;
+            font-size: 65px;
+            font-style: italic;
+        }
     }
 }
 
