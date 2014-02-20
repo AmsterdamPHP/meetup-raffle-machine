@@ -134,6 +134,10 @@ body {
     .rsvp {
         @extend .checkin;
 
+        &:hover {
+            cursor: pointer;
+        }
+
         &.checked_in {
             border: 8px solid #A1C99D;
         }
