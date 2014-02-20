@@ -122,47 +122,13 @@ body {
 }
 
 .rsvps {
-    text-align: center;
+    @extend .checkins;
 
     .rsvp {
-        @include border-radius(16px, 16px);
-        border: 0px;
-        display: inline-block;
-        width: 30%;
-        height: 100px;
-        margin: 0 1em 1em 0;
-        text-align: right;
-
-
-        .avatar{
-            @include border-radius(16px, 16px);
-            width: 100px;
-            height: 100px;
-            float:left;
-        }
-
-        .info {
-
-            margin: 1em;
-
-            .name {
-                display: block;
-            }
-
-            .status {
-                display: block;
-                height: 50%;
-            }
-
-            .loader {
-                margin: 0.5em
-            }
-        }
-
-
+        @extend .checkin;
 
         &.checked_in {
-            background-color: #A1C99D;
+            border: 8px solid #A1C99D;
         }
     }
 }
