@@ -7,7 +7,7 @@ class RandomService
     /**
      * Base URL
      */
-	const BASE_URL = 'http://www.random.org/integer-sets/?sets=1&min=%d&max=%d&num=%d&order=random&format=plain&rnd=new';
+    const BASE_URL = 'http://www.random.org/integer-sets/?sets=1&min=%d&max=%d&num=%d&order=random&format=plain&rnd=new';
 
     /**
      * Retrieve a block of random numbers.
