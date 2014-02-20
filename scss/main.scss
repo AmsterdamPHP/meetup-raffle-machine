@@ -46,6 +46,13 @@ body {
     }
 }
 
+@include at-breakpoint(15em) {
+    .title .primary {
+        width: 222px;
+        height: 40px;
+    }
+}
+
 .title {
     margin: 0 0 1.5em 0;
     font-size: 40px;
