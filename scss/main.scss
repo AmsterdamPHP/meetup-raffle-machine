@@ -46,7 +46,7 @@ body {
     }
 }
 
-@include at-breakpoint(15em) {
+@include at-breakpoint(30em) {
     .title .primary {
         width: 222px;
         height: 40px;
