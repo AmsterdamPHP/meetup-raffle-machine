@@ -119,6 +119,13 @@ body {
             }
         }
     }
+
+    .checkin-link {
+        margin-top: 1em;
+        a:link, a:visited {
+            color: white;
+        }
+    }
 }
 
 .rsvps {

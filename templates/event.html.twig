@@ -15,9 +15,8 @@
         {% if checkins is empty %}
             <p class="no-checkins">Oh noes! No checkins!</p>
         {% endif %}
+        <p class="checkin-link"><a href="{{ path('event_checkin', {id: event.id}) }}">Checkin here</a></p>
     </div>
-
-    <p><a href="{{ path('event_checkin', {id: event.id}) }}">Click here to checkin</a></p>
 {% endblock %}
 
 {% block javascripts %}
