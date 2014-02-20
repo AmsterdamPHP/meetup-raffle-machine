@@ -7,7 +7,7 @@
     <h2 class="title">{{ event.name }}</h2>
 
     <div class="rsvps">
-        <p class="no-checkins">Tap your picture to check in.</p>
+        <p class="tap-to-checkin">Tap your picture to check in.</p>
 
         {% for rsvp in event.rsvps %}
             <div class="rsvp {{ rsvp.id in checkins ? 'checked_in':'not_checked_in' }}" style="background-image: url('{{ rsvp.photo.photo_link|default('') }}');">
