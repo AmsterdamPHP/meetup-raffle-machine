@@ -14,13 +14,12 @@ class RandomService
      *
      * @param int $min   Minimum amount.
      * @param int $max   Maximum amount.
-     * @param int $count How many numbers.
      * @return array
      */
-    public function getRandomNumbers($min, $max, $count)
+    public function getRandomNumbers($min, $max)
     {
         // Construct the URL
-        $url = sprintf(self::BASE_URL, $min, $max, $count);
+        $url = sprintf(self::BASE_URL, $min, $max, $max + 1);
 
         // Fetch the numbers
         $ch = curl_init();
