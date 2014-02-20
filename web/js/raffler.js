@@ -60,6 +60,9 @@ var Raffler = {
      * Raffle.
      */
     raffle: function () {
+        // Hide checkin link
+        $('.checkin-link').hide();
+
         Raffler.state = 'raffling';
         Raffler.highlightRandomCheckin();
     },
