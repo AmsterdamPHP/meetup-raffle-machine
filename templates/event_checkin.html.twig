@@ -10,7 +10,7 @@
         <p class="tap-to-checkin">Tap your picture to check in.</p>
 
         {% for rsvp in event.rsvps %}
-            <div class="rsvp {{ rsvp.id in checkins ? 'checked_in':'not_checked_in' }}" style="background-image: url('{{ rsvp.photo.photo_link|default('') }}');">
+            <div data-user-id="{{ rsvp.id }}" class="rsvp {{ rsvp.id in checkins ? 'checked_in':'not_checked_in' }}" style="background-image: url('{{ rsvp.photo.photo_link|default('') }}');">
                 <span class="name">{{ rsvp.name }}</span>
             </div>
         {% endfor %}
