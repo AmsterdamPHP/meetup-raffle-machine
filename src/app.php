@@ -1,6 +1,7 @@
 <?php
 
 use DMS\Service\Meetup\MeetupKeyAuthClient;
+use Predis\Client;
 use Raffle\MeetupOauthHandler;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
@@ -38,7 +39,8 @@ $app['meetup_oauth_handler'] = new MeetupOauthHandler($app);
 $config = array('key' => $app['config']['meetup_api_key']);
 $app['meetup'] = new MeetupService(
     MeetupKeyAuthClient::factory($config),
-    $app['config']['meetup_group']
+    $app['config']['meetup_group'],
+    new Client()
 );
 
 // Random service

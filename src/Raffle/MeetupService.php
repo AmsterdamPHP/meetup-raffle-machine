@@ -3,6 +3,7 @@
 namespace Raffle;
 
 use DMS\Service\Meetup\AbstractMeetupClient;
+use Predis\Client;
 
 class MeetupService
 {
@@ -19,6 +20,10 @@ class MeetupService
      * @var string
      */
     protected $group;
+    /**
+     * @var \Predis\Client
+     */
+    private $cache;
 
     /**
      * Constructor. Sets dependencies.
@@ -28,10 +33,11 @@ class MeetupService
      *
      * @return \Raffle\MeetupService
      */
-    public function __construct(AbstractMeetupClient $client, $group)
+    public function __construct(AbstractMeetupClient $client, $group, Client $cache)
     {
         $this->client = $client;
         $this->group  = $group;
+        $this->cache = $cache;
     }
 
     /**
@@ -41,6 +47,12 @@ class MeetupService
      */
     public function getEvents()
     {
+
+        $cached = $this->getFromCache('events_cache');
+        if ($cached !== null) {
+            return $cached;
+        }
+
         // Fetch past and future events (only upcoming contains the current event)
         $events = $this->client->getEvents(
             array(
@@ -56,6 +68,8 @@ class MeetupService
                 return ($value['time'] < $dayFromNow)? true : false;
         });
 
+        $this->saveInCache('events_cache', $events);
+
         return $events;
     }
 
@@ -67,6 +81,12 @@ class MeetupService
      */
     public function getEvent($id)
     {
+
+        $cached = $this->getFromCache('event_cache_'.$id);
+        if ($cached !== null) {
+            return $cached;
+        }
+
         // Fetch, event, checkins and RSVPs (only the latter has pictures)
         $event    = $this->client->getEvent(array('id' => $id));
         $checkins = $this->client->getCheckins(array('event_id' => $id));
@@ -97,6 +117,8 @@ class MeetupService
                 'checkedIn' => in_array($rsvp['member']['member_id'], $checkedInMemberIds)
             );
         }
+
+        $this->saveInCache('event_cache_'.$id, $event);
 
         return $event;
     }
@@ -132,5 +154,20 @@ class MeetupService
     public function getClient()
     {
         return $this->client;
+    }
+
+    protected function saveInCache($key, $data)
+    {
+        $value = serialize($data);
+        $this->cache->set($key, $value);
+    }
+
+    protected function getFromCache($key)
+    {
+        if (! $this->cache->exists($key)) {
+            return null;
+        }
+
+        return unserialize($this->cache->get($key));
     }
 }
