@@ -159,7 +159,8 @@ class MeetupService
     protected function saveInCache($key, $data)
     {
         $value = serialize($data);
-        $this->cache->set($key, $value, 3600);
+        $this->cache->set($key, $value);
+        $this->cache->expire($key, 3600);
     }
 
     protected function getFromCache($key)
