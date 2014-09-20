@@ -126,14 +126,16 @@ body {
             position: relative;
             border: 0;
             width: 300px;
-            height: 300px;
+            height: 360px;
 
             .name {
                 position: absolute;
-                top: 315px;
+                top: 305px;
                 width: 100%;
                 display: block;
                 font-size: 2em;
+                background-color: rgba(0,0,0, 0.6);
+                padding: 3px;
             }
         }
     }
