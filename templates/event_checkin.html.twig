@@ -10,7 +10,12 @@
         <p class="tap-to-checkin">Tap your picture to check in.</p>
 
         {% for rsvp in event.rsvps %}
-            <div data-user-id="{{ rsvp.id }}" class="rsvp {{ rsvp.id in checkins ? 'checked_in':'not_checked_in' }}" style="background-image: url('{{ rsvp.photo.photo_link|default('') }}');">
+            <div data-user-id="{{ rsvp.id }}"
+                 data-user-name="{{ rsvp.name }}"
+                 class="rsvp {{ rsvp.id in checkins or rsvp.host ? 'checked_in':'not_checked_in' }}"
+                 style="background-image: url('{{ rsvp.photo.photo_link|default('/img/avatar.png') }}');"
+
+            >
                 <span class="name">{{ rsvp.name }}</span>
             </div>
         {% endfor %}
@@ -32,11 +37,13 @@
                 event_id: "{{ event.id }}"
             };
 
-            $.post("/user/checkin", params, function() {
-                $rsvpBlock.addClass('checked_in');
-                $rsvpBlock.removeClass('not_checked_in');
-                $rsvpBlock.unbind('click');
-            }).fail(function() { alert("Error checking user in."); });
+            if (window.confirm("Checkin as " + $rsvpBlock.attr('data-user-name') + "?")) {
+                $.post("/user/checkin", params, function() {
+                    $rsvpBlock.addClass('checked_in');
+                    $rsvpBlock.removeClass('not_checked_in');
+                    $rsvpBlock.unbind('click');
+                }).fail(function() { alert("Error checking user in."); });
+            }
 
         });
     </script>

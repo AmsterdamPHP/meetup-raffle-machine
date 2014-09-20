@@ -103,7 +103,7 @@ var Raffler = {
      */
     highlightRandomCheckin: function() {
         // Abort if we have reached 50 cycles
-        if (50 <= Raffler.currentCycle) {
+        if (45 <= Raffler.currentCycle) {
             Raffler.showWinner();
             return;
         }
