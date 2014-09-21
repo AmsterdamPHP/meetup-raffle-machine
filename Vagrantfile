@@ -36,3 +36,9 @@ Vagrant.configure("2") do |config|
         }
     end
 end
+
+Vagrant::Config.run do |config|
+    config.vm.provision :shell do |shell|
+        shell.inline = "sudo gem install compass --no-ri --no-rdoc && sudo gem install susy --no-ri --no-rdoc"
+    end
+end
