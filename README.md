@@ -6,18 +6,26 @@ This application enables us to raffle off stuff to our meetup attendees. It uses
 
 ### Install into a virtual machine. (Linux and OSX users only)
 
+Ensure that [VirtualBox](https://www.virtualbox.org), [Vagrant](http://www.vagrantup.com), and [Ansible](http://www.ansible.com) are installed.
+
 1. `git clone git@github.com:AmsterdamPHP/meetup-raffle-machine.git --recursive`
-2. Ensure that Virtualbox, Vagrant, and Ansible are installed.
-3. run `vagrant up`
-4. create config/parameters.yml (get your API key from [meetup.com](https://secure.meetup.com/meetup_api/key/))
+2. run `vagrant up`
+3. create config/parameters.yml (get your API key from [meetup.com](https://secure.meetup.com/meetup_api/key/))
 
     ```
     meetup_group:   amsterdamphp
     meetup_api_key: YOUR_MEETUP_API_KEY
     ```
 
-5. (from within the machine) `composer install`
-6. (from within the machine) `compass compile`
+4. (from within the machine) `composer install` to install composer dependencies
+5. (from within the machine) `compass compile` to compile styles
+6. add the following to your /etc/hosts file
+
+    ```
+    10.10.10.10 app.local
+    ```
+
+All done! Now you can access the application at [http://app.local/](http://app.local/).
 
 ### Install directly onto your host machine.
 
