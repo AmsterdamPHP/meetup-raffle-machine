@@ -88,31 +88,16 @@ class MeetupService
         }
 
         // Fetch, event, checkins and RSVPs (only the latter has pictures)
-        $event    = $this->client->getEvent(array('id' => $id));
-        $checkins = $this->client->getCheckins(array('event_id' => $id));
+        $event = $this->client->getEvent(array('id' => $id));
+
         $rsvps = $this->client->getRSVPs(
             array('event_id' => $id, 'rsvp' => 'yes', 'order' => 'name', 'fields' => 'host', 'page' => 120)
         );
-
-        // Intersect the RSVPs with the checkins and add them to the event array
-        $checkedInMemberIds = array();
-        foreach ($checkins as $checkin) {
-            $checkedInMemberIds[] = $checkin['member_id'];
-        }
 
         $event = $event->toArray();
         $event['checkins'] = array();
         $event['rsvps']    = array();
         foreach ($rsvps as $rsvp) {
-            if (in_array($rsvp['member']['member_id'], $checkedInMemberIds)) {
-                $event['checkins'][] = array(
-                    'id' => $rsvp['member']['member_id'],
-                    'name' => $rsvp['member']['name'],
-                    'photo' => $rsvp['member_photo'],
-                    'host' => $rsvp['host']
-                );
-            }
-
             $event['rsvps'][] = array(
                 'id'        => $rsvp['member']['member_id'],
                 'name'      => $rsvp['member']['name'],
