@@ -3,7 +3,6 @@
 /vendor/
 /cache/*
 /logs/*
-/web/css/
 silex.log
 /config/parameters.yml
 /.vagrant
