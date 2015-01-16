@@ -19,7 +19,7 @@ class RandomService
     public function getRandomNumbers($min, $max)
     {
         // Construct the URL
-        $url = sprintf(self::BASE_URL, $min, $max, $max + 1);
+        $url = sprintf(self::BASE_URL, $min, $max, $max);
 
         // Fetch the numbers
         $ch = curl_init();
