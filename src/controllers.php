@@ -2,6 +2,7 @@
 
 use Predis\Client;
 use Raffle\MeetupOauthHandler;
+use Raffle\RandomService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,10 +22,17 @@ $app->get('/', function () use ($app) {
 $app->get('/event/{id}', function ($id) use ($app) {
     $event = $app['meetup']->getEvent($id);
 
+    /** @var RandomService $randomService */
+    $randomService = $app['random'];
+
     $client = new Client();
     $checkins = array_filter($client->lrange('checkin_'.$id, 0, 300));
 
-    $winners = $app['random']->getRandomNumbers(0, count($checkins) - 1);
+    $checkinCount = count($checkins);
+    $winners = array(1); // Winner winner, chicken dinner
+    if($checkinCount > 1) {
+        $winners = $randomService->getRandomNumbers(1, $checkinCount);
+    }
 
     return $app['twig']->render(
         'event.html.twig',
