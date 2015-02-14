@@ -60,6 +60,13 @@ var Raffler = {
      * Raffle.
      */
     raffle: function () {
+
+        if (Raffler.winners.length <= 0 ) {
+            alert("We have gone over the initial draft, please refresh page.");
+            window.history.go(0);
+            return;
+        }
+
         // Hide checkin link
         $('.checkin-link').hide();
 
@@ -76,6 +83,7 @@ var Raffler = {
 
         // Hide all checkins
         $('.checkin').addClass('loser', 1000);
+
 
         // Show winner
         var winner = $('.checkin').eq(Raffler.winners.pop());
