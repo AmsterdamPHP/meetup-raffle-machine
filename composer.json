@@ -30,7 +30,8 @@
         "symfony/yaml":           "2.1.*",
 
         "dms/meetup-api-client": "~1.0@dev",
-        "predis/predis": "~0.8"
+        "predis/predis": "~0.8",
+        "ircmaxell/random-lib": "^1.1"
 
     },
 

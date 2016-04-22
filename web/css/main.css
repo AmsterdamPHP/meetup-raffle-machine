@@ -184,6 +184,7 @@ body {
   background-position: center;
   background-size: cover;
   text-align: center;
+  background-color: #cccccc;
 }
 /* line 112, ../../scss/main.scss */
 .checkins .checkin .name, .rsvps .checkin .name, .rsvps .rsvp .name {

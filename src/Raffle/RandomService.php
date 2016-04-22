@@ -2,6 +2,9 @@
 
 namespace Raffle;
 
+use RandomLib\Factory;
+use SecurityLib\Strength;
+
 class RandomService
 {
     /**
@@ -18,17 +21,17 @@ class RandomService
      */
     public function getRandomNumbers($min, $max)
     {
-        // Construct the URL
-        $url = sprintf(self::BASE_URL, $min, $max, $max+1);
+        $factory = new Factory();
+        $generator = $factory->getGenerator(new Strength(Strength::MEDIUM));
 
-        // Fetch the numbers
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        $data = curl_exec($ch);
+        $numbers = [];
+
+        while(count($numbers) < ($max + 1)) {
+            $numbers[] = $generator->generateInt($min, $max);
+            $numbers   = array_unique($numbers);
+        }
 
         // Decode data and return
-        return explode(" ", trim($data));
+        return array_values($numbers);
     }
 }
