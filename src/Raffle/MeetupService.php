@@ -102,7 +102,6 @@ class MeetupService
                 'id'        => $rsvp['member']['member_id'],
                 'name'      => $rsvp['member']['name'],
                 'photo'     => isset($rsvp['member_photo']) ? $rsvp['member_photo'] : null,
-                'checkedIn' => in_array($rsvp['member']['member_id'], $checkedInMemberIds),
                 'host'      => $rsvp['host']
             );
         }
