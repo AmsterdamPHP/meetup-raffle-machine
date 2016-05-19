@@ -11,10 +11,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
 // Event index
-$app->get('/', function () use ($app) {
+$app->get('/', function (Request $request) use ($app) {
+    $cacheBusting = filter_var($request->get('cache_busting', false), FILTER_VALIDATE_BOOLEAN);
+
     return $app['twig']->render(
         'index.html.twig',
-        array('meetups' => $app['meetup']->getEvents())
+        array('meetups' => $app['meetup']->getEvents($cacheBusting))
     );
 })->bind('homepage');
 
