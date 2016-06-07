@@ -63,15 +63,25 @@ class MeetupService
             )
         );
 
-        // Filter out events further in the future than a day
-        $dayFromNow = (time() + (24 * 60 * 60)) * 1000;
-        $events = $events->filter(function($value) use ($dayFromNow) {
-                return ($value['time'] < $dayFromNow)? true : false;
-        });
-
         $this->saveInCache('events_cache', $events);
 
         return $events;
+    }
+
+    /**
+     * @param bool $bustCache
+     *
+     * @return mixed
+     */
+    public function getPresentAndPastEvents($bustCache = false)
+    {
+        $events = $this->getEvents($bustCache);
+
+        // Filter out events further in the future than a day
+        $dayFromNow = (time() + (24 * 60 * 60)) * 1000;
+        return $events->filter(function($value) use ($dayFromNow) {
+            return ($value['time'] < $dayFromNow)? true : false;
+        });
     }
 
     /**

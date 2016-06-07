@@ -36,6 +36,7 @@
     "repositories": [
     ],
     "require-dev": {
-        "deployer/deployer": "^4@dev"
+        "deployer/deployer": "^4@dev",
+        "symfony/var-dumper": "^3.1"
     }
 }

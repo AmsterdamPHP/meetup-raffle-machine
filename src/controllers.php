@@ -5,9 +5,6 @@ use Raffle\MeetupOauthHandler;
 use Raffle\RandomService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
 // Event index
@@ -16,7 +13,7 @@ $app->get('/', function (Request $request) use ($app) {
 
     return $app['twig']->render(
         'index.html.twig',
-        array('meetups' => $app['meetup']->getEvents($cacheBusting))
+        array('meetups' => $app['meetup']->getPresentAndPastEvents($cacheBusting))
     );
 })->bind('homepage');
 
