@@ -18,8 +18,9 @@ Ensure that [VirtualBox](https://www.virtualbox.org), [Vagrant](http://www.vagra
     ```
 
 4. (from within the machine) `composer install` to install composer dependencies
-5. (from within the machine) `compass compile` to compile styles
-6. add the following to your /etc/hosts file
+5. (from within the machine) `npm install` to grab npm dependencies
+6. (from within the machine) `./node_modules/.bin/gulp` to compile styles
+7. add the following to your /etc/hosts file
 
     ```
     10.10.10.10 app.local
@@ -40,15 +41,14 @@ All done! Now you can access the application at [http://app.local/](http://app.l
 3. Install Dependencies
 
     ```
-    gem update --system
-    gem install compass
-    gem install susy
+    composer install
+    npm install
     ```
 
-4. Compile stylesheets
+4. Compile assets
 
     ```
-    compass compile
+    ./node_modules/.bin/gulp
     ```
 
 5. Create config/parameters.yml
