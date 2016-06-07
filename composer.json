@@ -34,5 +34,8 @@
     },
 
     "repositories": [
-    ]
+    ],
+    "require-dev": {
+        "deployer/deployer": "^4@dev"
+    }
 }
