@@ -43,13 +43,14 @@ class MeetupService
     /**
      * Fetch all events in the past and up to a day in the future.
      *
+     * @param bool $bustCache
+     *
      * @return array
      */
-    public function getEvents()
+    public function getEvents($bustCache = false)
     {
-
         $cached = $this->getFromCache('events_cache');
-        if ($cached !== null) {
+        if ($bustCache == false && $cached !== null) {
             return $cached;
         }
 
