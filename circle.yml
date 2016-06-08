@@ -13,7 +13,9 @@ dependencies:
 
 test:
     override:
-        - ./vendor/bin/phpunit --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml
+        - php -S localhost:8080 -t web web/index.php:
+            background: true
+        - npm test
 
 deployment:
     production:
