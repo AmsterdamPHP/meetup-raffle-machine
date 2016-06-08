@@ -9,7 +9,7 @@
     {% if meetups is not empty %}
     <ul class="meetups">
         {% for meetup in meetups %}
-            <li{% if loop.first %} class="first"{% endif %}>
+            <li{% if loop.first %} class="first"{% endif %} data-date="{{ meetup.time }}">
                 <a href="{{ path('event', {id: meetup.id}) }}">{{ meetup.name }}</a>
             </li>
         {% endfor %}

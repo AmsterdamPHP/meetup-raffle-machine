@@ -4,11 +4,13 @@
   "description": "Raffle system for meetup groups",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha",
+    "serve": "php -S localhost:8080 -t web web/index.php"
   },
   "author": "AmsterdamPHP",
   "license": "MIT",
   "devDependencies": {
+    "chai": "^3.5.0",
     "compass-mixins": "^0.12.10",
     "gulp": "^3.9",
     "gulp-autoprefixer": "^2.1.0",
@@ -21,6 +23,9 @@
     "gulp-sass": "^2.1",
     "gulp-uglify": "^1.5",
     "jquery-color-animation": "^1.5.1",
+    "mocha": "^2.5.3",
+    "mocha-generators": "^1.2.0",
+    "nightmare": "^2.5.0",
     "sass-include-paths": "^4.5.0",
     "sass-loader": "^3.2.0",
     "susy": "^2.2.12"
