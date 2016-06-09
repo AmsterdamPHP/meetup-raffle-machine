@@ -16,7 +16,7 @@ dependencies:
 
 test:
     pre:
-        - echo "meetup_api_key: $MEETUP_API_KEY\nmeetup_group: $MEETUP_GROUP" > config/parameters.yml
+        - "echo \"meetup_api_key: $MEETUP_API_KEY\nmeetup_group: $MEETUP_GROUP\" > config/parameters.yml"
     override:
         - php -S localhost:8080 -t web web/index.php:
             background: true
