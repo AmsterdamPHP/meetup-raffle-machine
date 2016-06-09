@@ -1,6 +1,8 @@
 machine:
     php:
         version: 7.0.4
+    services:
+        - redis
 
 dependencies:
     cache_directories:
