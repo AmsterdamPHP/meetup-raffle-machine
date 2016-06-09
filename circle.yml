@@ -3,6 +3,9 @@ machine:
         version: 7.0.4
 
 dependencies:
+    cache_directories:
+        - ~/.composer/cache
+
     override:
         - composer install --dev --no-progress --no-interaction --prefer-dist
         - npm install --no-progress
@@ -13,7 +16,7 @@ dependencies:
 
 test:
     override:
-        - npm serve:
+        - php -S localhost:8080 -t web web/index.php:
             background: true
         - sleep 5
         - npm test

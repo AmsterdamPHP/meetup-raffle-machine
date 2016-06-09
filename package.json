@@ -4,8 +4,7 @@
   "description": "Raffle system for meetup groups",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha",
-    "serve": "php -S localhost:8080 -t web web/index.php"
+    "test": "./node_modules/.bin/mocha"
   },
   "author": "AmsterdamPHP",
   "license": "MIT",
