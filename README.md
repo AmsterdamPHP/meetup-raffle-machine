@@ -8,6 +8,13 @@ This application enables us to raffle off stuff to our meetup attendees. It uses
 
 Ensure that [VirtualBox](https://www.virtualbox.org), [Vagrant](http://www.vagrantup.com), and [Ansible](http://www.ansible.com) are installed.
 
+You can optionally install the plugin `vagrant-hostmanager`, so you don't need to do any manual configuration on your machine:
+
+    ```
+    $ vagrant plugin install vagrant-hostmanager
+    ```
+
+
 1. `git clone git@github.com:AmsterdamPHP/meetup-raffle-machine.git --recursive`
 2. run `vagrant up`
 3. create config/parameters.yml (get your API key from [meetup.com](https://secure.meetup.com/meetup_api/key/))
@@ -19,7 +26,7 @@ Ensure that [VirtualBox](https://www.virtualbox.org), [Vagrant](http://www.vagra
 
 4. (from within the machine) `composer install` to install composer dependencies
 5. (from within the machine) `compass compile` to compile styles
-6. add the following to your /etc/hosts file
+6. add the following to your /etc/hosts file (only if you didn't installed `vagrant-hostmanager`)
 
     ```
     10.10.10.10 app.local

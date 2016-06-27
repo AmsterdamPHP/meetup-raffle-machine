@@ -5,11 +5,18 @@ Vagrant.configure("2") do |config|
     config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
 
     config.vm.network :private_network, ip: "10.10.10.10"
+    config.vm.hostname = "app.local"
 
     config.vm.provider :virtualbox do |v|
         v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
         v.customize ["modifyvm", :id, "--memory", 512]
         v.customize ["modifyvm", :id, "--name", "Meetup Raffle Machine"]
+    end
+
+    if Vagrant.has_plugin?("vagrant-hostmanager")
+        config.hostmanager.enabled = true
+        config.hostmanager.manage_host = true
+        config.hostmanager.include_offline = true
     end
 
     config.vm.provision "ansible" do |ansible|
