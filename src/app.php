@@ -32,7 +32,14 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 
 // Meetup service
-$config = array('key' => $app['config']['meetup_api_key']);
+$config = [
+    'key' => '',
+];
+
+if (isset($app['config']['meetup_api_key'])) {
+    $config['key'] = $app['config']['meetup_api_key'];
+}
+
 $app['meetup'] = new MeetupService(
     MeetupKeyAuthClient::factory($config),
     $app['config']['meetup_group'],
