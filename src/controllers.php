@@ -27,7 +27,7 @@ $app->get('/event/{id}', function ($id) use ($app) {
     $client = new Client();
     $checkins = array_filter($client->lrange('checkin_'.$id, 0, 300));
 
-    $winners = (count($checkins) > 1)? $randomService->getRandomNumbers(0, count($checkins) - 1) : array(0);
+    $winners = (count($checkins) > 1)? $randomService->getRandomNumbers(count($checkins)) : array(0);
 
     return $app['twig']->render(
         'event.html.twig',
