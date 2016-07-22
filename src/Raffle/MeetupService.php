@@ -125,14 +125,6 @@ final class MeetupService
     }
 
     /**
-     * @return \DMS\Service\Meetup\AbstractMeetupClient
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    /**
      * @param string $key
      * @param mixed $data
      */
