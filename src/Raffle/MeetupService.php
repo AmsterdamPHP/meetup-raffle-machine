@@ -3,6 +3,7 @@
 namespace Raffle;
 
 use DMS\Service\Meetup\AbstractMeetupClient;
+use DMS\Service\Meetup\Response\MultiResultResponse;
 use Predis\Client;
 
 final class MeetupService
@@ -46,7 +47,7 @@ final class MeetupService
      *
      * @param bool $bustCache
      *
-     * @return array
+     * @return MultiResultResponse
      */
     public function getEvents($bustCache = false)
     {
