@@ -83,7 +83,7 @@ final class MeetupService
         $dayFromNow = (time() + (24 * 60 * 60)) * 1000;
         return $events->filter(function($value) use ($dayFromNow) {
             return ($value['time'] < $dayFromNow);
-        });
+        })->toArray();
     }
 
     /**
