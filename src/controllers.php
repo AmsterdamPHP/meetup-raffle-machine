@@ -7,13 +7,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
+/**
+ * Add type hint for IDEs, since this file is included
+ *
+ * @var Silex\Application $app
+ */
+
 // Event index
 $app->get('/', function (Request $request) use ($app) {
     $cacheBusting = filter_var($request->get('cache_busting', false), FILTER_VALIDATE_BOOLEAN);
 
+    /** @var \Raffle\MeetupService $meetupService */
+    $meetupService = $app['meetup'];
+
     return $app['twig']->render(
         'index.html.twig',
-        array('meetups' => $app['meetup']->getPresentAndPastEvents($cacheBusting))
+        array('meetups' => $meetupService->getPresentAndPastEvents($cacheBusting))
     );
 })->bind('homepage');
 
