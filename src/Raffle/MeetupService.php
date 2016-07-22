@@ -125,31 +125,6 @@ final class MeetupService
     }
 
     /**
-     * Allows and Admin to check a user into an event
-     *
-     * API Client has no support for POST, so we use Buzz.
-     *
-     * @param string $eventId
-     * @param string $userId
-     * @return bool
-     */
-    public function checkUserIn($eventId, $userId)
-    {
-        $params = array(
-            'event_id'           => $eventId,
-            'attendee_member_id' => $userId,
-        );
-
-        $response = $this->client->postCheckin($params);
-
-        if ($response->getStatusCode() != 201) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * @return \DMS\Service\Meetup\AbstractMeetupClient
      */
     public function getClient()
