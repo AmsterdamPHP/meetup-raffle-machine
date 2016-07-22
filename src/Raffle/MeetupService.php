@@ -49,7 +49,7 @@ final class MeetupService
      *
      * @return MultiResultResponse
      */
-    public function getEvents($bustCache = false)
+    private function getEvents($bustCache = false)
     {
         $cached = $this->getFromCache('events_cache');
         if ($bustCache == false && $cached !== null) {
