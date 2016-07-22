@@ -26,4 +26,17 @@ final class RandomServiceTest extends \PHPUnit_Framework_TestCase
         $uniqueNumbers = array_unique($numbers);
         $this->assertSame($numbers, $uniqueNumbers);
     }
+
+    public function test_list_is_empty_when_amount_zero()
+    {
+        // The service should not return any numbers if the amount is zero
+        $this->assertEmpty($this->service->getRandomNumbers(0));
+    }
+
+    public function test_list_includes_zero()
+    {
+        // The service should return _all_ numbers for $amount in random order
+        $this->assertContains(0, $this->service->getRandomNumbers(1));
+        $this->assertContains(0, $this->service->getRandomNumbers(2));
+    }
 }
