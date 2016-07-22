@@ -86,7 +86,7 @@ $app->error(function (\Exception $e, $code) use ($app) {
 });
 
 // Oauth Handshake
-$app->get('/oauth/authorize', function (Request $request) use ($app) {
+$app->get('/oauth/authorize', function () use ($app) {
 
         /** @var MeetupOauthHandler $oauthHandler */
         $oauthHandler = $app['meetup_oauth_handler'];
