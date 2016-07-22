@@ -21,7 +21,8 @@ final class RandomService
         $numbers = [];
 
         while(count($numbers) < $amount) {
-            $numbers[] = $generator->generateInt(0, $amount);
+            // Amount minus 1 since we want results ranging from zero till amount
+            $numbers[] = $generator->generateInt(0, $amount - 1);
             $numbers   = array_unique($numbers);
         }
 
