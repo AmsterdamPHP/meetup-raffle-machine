@@ -132,14 +132,22 @@ final class MeetupService
         return $this->client;
     }
 
-    protected function saveInCache($key, $data)
+    /**
+     * @param string $key
+     * @param mixed $data
+     */
+    private function saveInCache($key, $data)
     {
         $value = serialize($data);
         $this->cache->set($key, $value);
         $this->cache->expire($key, 3600);
     }
 
-    protected function getFromCache($key)
+    /**
+     * @param string $key
+     * @return mixed|null
+     */
+    private function getFromCache($key)
     {
         if (! $this->cache->exists($key)) {
             return null;
