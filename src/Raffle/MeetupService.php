@@ -81,7 +81,7 @@ final class MeetupService
         // Filter out events further in the future than a day
         $dayFromNow = (time() + (24 * 60 * 60)) * 1000;
         return $events->filter(function($value) use ($dayFromNow) {
-            return ($value['time'] < $dayFromNow)? true : false;
+            return ($value['time'] < $dayFromNow);
         });
     }
 
