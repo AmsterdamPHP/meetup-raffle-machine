@@ -5,21 +5,22 @@ namespace Raffle;
 use DMS\Service\Meetup\AbstractMeetupClient;
 use Predis\Client;
 
-class MeetupService
+final class MeetupService
 {
     /**
      * Meetup client
      *
      * @var AbstractMeetupClient
      */
-    protected $client;
+    private $client;
 
     /**
      * Meetup group
      *
      * @var string
      */
-    protected $group;
+    private $group;
+
     /**
      * @var \Predis\Client
      */
