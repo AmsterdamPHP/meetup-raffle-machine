@@ -1,5 +1,5 @@
 {
-    "name": "fabpot/silex-skeleton",
+    "name": "amsterdamphp/meetup-raffle-machine",
 
     "autoload": {
         "psr-0": { "": "src/" }
