@@ -1,11 +1,9 @@
 <?php
 
 use Predis\Client;
-use Raffle\MeetupOauthHandler;
 use Raffle\RandomService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGenerator;
 
 /**
  * Add type hint for IDEs, since this file is included
@@ -84,39 +82,3 @@ $app->error(function (\Exception $e, $code) use ($app) {
 
     return new Response($app['twig']->render($page, array('code' => $code)), $code);
 });
-
-// Oauth Handshake
-$app->get('/oauth/authorize', function () use ($app) {
-
-        /** @var MeetupOauthHandler $oauthHandler */
-        $oauthHandler = $app['meetup_oauth_handler'];
-
-        $oauthHandler->clearSessionToken();
-
-        $client = $oauthHandler->getOauthMeetupService()->getClient();
-
-        $callback = $app['url_generator']->generate('meetup_oauth_callback', array(), UrlGenerator::ABSOLUTE_URL);
-        $tokenResponse = $client->getRequestToken(array(
-                'oauth_callback' => $callback
-            ));
-
-        $oauthHandler->setSessionToken($tokenResponse['oauth_token'], $tokenResponse['oauth_token_secret']);
-
-        return $app->redirect('http://www.meetup.com/authorize/?oauth_token=' . $tokenResponse['oauth_token']);
-    })->bind('meetup_oauth_authorize');
-
-// Oauth Callback
-$app->get('/oauth/callback', function (Request $request) use ($app) {
-
-        /** @var MeetupOauthHandler $oauthHandler */
-        $oauthHandler = $app['meetup_oauth_handler'];
-        $client = $oauthHandler->getOauthMeetupService()->getClient();
-
-        $response = $client->getAccessToken($request->query->all());
-
-        $oauthHandler->setSessionToken($response['oauth_token'], $response['oauth_token_secret']);
-
-        $redirect = $app['session']->get('redirect_url') ?: $app['url_generator']->generate('homepage');
-
-        return $app->redirect($redirect);
-})->bind('meetup_oauth_callback');
