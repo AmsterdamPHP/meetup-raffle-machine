@@ -9,8 +9,18 @@ Vagrant.configure("2") do |config|
 
     config.vm.provider :virtualbox do |v|
         v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-        v.customize ["modifyvm", :id, "--memory", 512]
+        v.customize ["modifyvm", :id, "--memory", 1024]
         v.customize ["modifyvm", :id, "--name", "Meetup Raffle Machine"]
+    end
+
+    config.vm.provider :libvirt do |domain|
+        domain.memory = 1024
+    end
+
+    if (/linux/ =~ RUBY_PLATFORM) != nil
+        config.vm.synced_folder "./", "/vagrant", id: "vagrant-root", nfs: true, :linux__nfs_options => ['rw','no_subtree_check','all_squash','async']
+    else
+        config.vm.synced_folder "./", "/vagrant", id: "vagrant-root", :nfs => true
     end
 
     if Vagrant.has_plugin?("vagrant-hostmanager")
