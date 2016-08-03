@@ -3,23 +3,25 @@
 namespace Raffle;
 
 use DMS\Service\Meetup\AbstractMeetupClient;
+use DMS\Service\Meetup\Response\MultiResultResponse;
 use Predis\Client;
 
-class MeetupService
+final class MeetupService
 {
     /**
      * Meetup client
      *
      * @var AbstractMeetupClient
      */
-    protected $client;
+    private $client;
 
     /**
      * Meetup group
      *
      * @var string
      */
-    protected $group;
+    private $group;
+
     /**
      * @var \Predis\Client
      */
@@ -45,9 +47,9 @@ class MeetupService
      *
      * @param bool $bustCache
      *
-     * @return array
+     * @return MultiResultResponse
      */
-    public function getEvents($bustCache = false)
+    private function getEvents($bustCache = false)
     {
         $cached = $this->getFromCache('events_cache');
         if ($bustCache == false && $cached !== null) {
@@ -80,8 +82,8 @@ class MeetupService
         // Filter out events further in the future than a day
         $dayFromNow = (time() + (24 * 60 * 60)) * 1000;
         return $events->filter(function($value) use ($dayFromNow) {
-            return ($value['time'] < $dayFromNow)? true : false;
-        });
+            return ($value['time'] < $dayFromNow);
+        })->toArray();
     }
 
     /**
@@ -123,46 +125,21 @@ class MeetupService
     }
 
     /**
-     * Allows and Admin to check a user into an event
-     *
-     * API Client has no support for POST, so we use Buzz.
-     *
-     * @param string $eventId
-     * @param string $userId
-     * @return bool
+     * @param string $key
+     * @param mixed $data
      */
-    public function checkUserIn($eventId, $userId)
-    {
-        $params = array(
-            'event_id'           => $eventId,
-            'attendee_member_id' => $userId,
-        );
-
-        $response = $this->client->postCheckin($params);
-
-        if ($response->getStatusCode() != 201) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @return \DMS\Service\Meetup\AbstractMeetupClient
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    protected function saveInCache($key, $data)
+    private function saveInCache($key, $data)
     {
         $value = serialize($data);
         $this->cache->set($key, $value);
         $this->cache->expire($key, 3600);
     }
 
-    protected function getFromCache($key)
+    /**
+     * @param string $key
+     * @return mixed|null
+     */
+    private function getFromCache($key)
     {
         if (! $this->cache->exists($key)) {
             return null;

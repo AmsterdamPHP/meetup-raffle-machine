@@ -86,12 +86,7 @@ var Raffler = {
 
 
         // Show winner
-        var winner;
-
-        do {
-            winner = $('.checkin').eq(Raffler.winners.pop());
-        } while (winner.length === 0);
-
+        var winner = $('.checkin').eq(Raffler.winners.pop());
         winner.switchClass('loser', 'winner', 200);
     },
 

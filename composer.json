@@ -1,5 +1,5 @@
 {
-    "name": "fabpot/silex-skeleton",
+    "name": "amsterdamphp/meetup-raffle-machine",
 
     "autoload": {
         "psr-0": { "": "src/" }
@@ -37,6 +37,7 @@
     ],
     "require-dev": {
         "deployer/deployer": "^4@dev",
-        "symfony/var-dumper": "^3.1"
+        "symfony/var-dumper": "^3.1",
+        "phpunit/phpunit": "^5.4"
     }
 }
