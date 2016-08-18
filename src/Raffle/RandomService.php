@@ -5,29 +5,24 @@ namespace Raffle;
 use RandomLib\Factory;
 use SecurityLib\Strength;
 
-class RandomService
+final class RandomService
 {
-    /**
-     * Base URL
-     */
-    const BASE_URL = 'https://www.random.org/integer-sets/?sets=1&min=%d&max=%d&num=%d&order=random&format=plain&rnd=new';
-
     /**
      * Retrieve a block of random numbers.
      *
-     * @param int $min   Minimum amount.
-     * @param int $max   Maximum amount.
+     * @param int $amount How many random numbers you require
      * @return array
      */
-    public function getRandomNumbers($min, $max)
+    public function getRandomNumbers($amount)
     {
         $factory = new Factory();
         $generator = $factory->getGenerator(new Strength(Strength::MEDIUM));
 
         $numbers = [];
 
-        while(count($numbers) < ($max + 1)) {
-            $numbers[] = $generator->generateInt($min, $max);
+        while(count($numbers) < $amount) {
+            // Amount minus 1 since we want results ranging from zero till amount
+            $numbers[] = $generator->generateInt(0, $amount - 1);
             $numbers   = array_unique($numbers);
         }
 
