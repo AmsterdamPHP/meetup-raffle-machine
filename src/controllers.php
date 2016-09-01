@@ -26,33 +26,22 @@ $app->get('/', function (Request $request) use ($app) {
 
 // Specific event
 $app->get('/event/{id}', function ($id) use ($app) {
-    $event = $app['meetup']->getEvent($id);
 
     /** @var RandomService $randomService */
     $randomService = $app['random'];
 
-    $client = new Client();
-    $checkins = array_filter($client->lrange('checkin_'.$id, 0, 300));
-
-    $winners = (count($checkins) > 0)? $randomService->getRandomNumbers(count($checkins)) : array();
-    return $app['twig']->render(
-        'event.html.twig',
-        array('event' => $event, 'winners' => $winners, 'checkins' => $checkins)
-    );
-})->bind('event');
-
-// Check-in page for Event
-$app->get('/event/{id}/checkin', function ($id, Request $request) use ($app) {
-
     $event = $app['meetup']->getEvent($id);
     $client = new Client();
     $checkins = array_filter($client->lrange('checkin_'.$id, 0, 300));
 
+    $winners = (count($checkins) > 0) ? $randomService->getRandomNumbers(count($checkins)) : [];
+
     return $app['twig']->render(
         'event_checkin.html.twig',
-        array('event' => $event, 'checkins' => $checkins)
+        array('event' => $event, 'winners' => $winners, 'checkins' => $checkins)
     );
-})->bind('event_checkin');
+
+})->bind('event');
 
 // Checks a user into an event
 $app->post('/user/checkin', function (Request $request) use ($app) {

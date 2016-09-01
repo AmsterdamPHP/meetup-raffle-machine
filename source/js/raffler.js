@@ -36,7 +36,13 @@ var Raffler = {
     onKeyDown: function(e) {
         // We only handle the space (32) and page down (34) keys. Page down is enabled because
         // presentation remotes emit page down on the "next" button
-        if (e.keyCode != 32 && e.keyCode != 34) {
+        if (e.keyCode != 32 && e.keyCode != 34 && e.keyCode != 27) {
+            return;
+        }
+
+        if (e.keyCode == 27) {
+            Raffler.flushAbsent();
+            Raffler.resetRaffler();
             return;
         }
 
@@ -67,11 +73,15 @@ var Raffler = {
             return;
         }
 
-        // Hide checkin link
-        $('.checkin-link').hide();
+        Raffler.hideCheckinHint();
 
         Raffler.state = 'raffling';
         Raffler.highlightRandomCheckin();
+    },
+
+    hideCheckinHint: function() {
+        $('.tap-to-checkin').hide();
+        $('.not_checked_in').unbind('click');
     },
 
     /**
@@ -144,5 +154,11 @@ var Raffler = {
     getRandomCheckin: function() {
         var random = Math.floor(Math.random() * $('.checkin').size());
         return($('.checkin').eq(random));
+    },
+
+    flushAbsent: function() {
+        $('.not_checked_in').remove();
+        $('.checked_in').removeClass('checked_in');
+        Raffler.hideCheckinHint();
     }
 };
