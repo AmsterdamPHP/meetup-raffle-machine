@@ -29,8 +29,7 @@
     <script src="/js/main.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
         $(function() {
-            Raffler.init();
-            Raffler.winners = {{ winners|json_encode|raw }}
+            Raffler.init({{ winners|json_encode|raw }});
         });
     </script>
     <script>

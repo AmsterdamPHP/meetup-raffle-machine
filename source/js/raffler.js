@@ -23,10 +23,14 @@ var Raffler = {
      */
     state: 'start',
 
+    flushConst: 'flush',
+    raffleConst: 'raffle',
+
     /**
      * Initialize
      */
-    init: function() {
+    init: function(winners) {
+        Raffler.winners = winners;
         $(document).on('keydown', Raffler.onKeyDown);
     },
 
@@ -34,13 +38,16 @@ var Raffler = {
      * On key down handler.
      */
     onKeyDown: function(e) {
+
+        var key = e.keyCode;
+
         // We only handle the space (32) and page down (34) keys. Page down is enabled because
         // presentation remotes emit page down on the "next" button
-        if (e.keyCode != 32 && e.keyCode != 34 && e.keyCode != 27) {
+        if (acceptedKeys[key] === undefined) {
             return;
         }
 
-        if (e.keyCode == 27) {
+        if (acceptedKeys[key] == Raffler.flushConst) {
             Raffler.flushAbsent();
             Raffler.resetRaffler();
             return;
@@ -161,4 +168,10 @@ var Raffler = {
         $('.checked_in').removeClass('checked_in');
         Raffler.hideCheckinHint();
     }
+};
+
+var acceptedKeys = {
+    27:  Raffler.flushConst ,
+    32 : Raffler.raffleConst,
+    34 : Raffler.raffleConst
 };
