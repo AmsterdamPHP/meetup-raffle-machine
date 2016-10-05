@@ -132,7 +132,7 @@ describe('AmsterdamPHP Raffler', function () {
                     expect(dismiss_winner).to.be.false;
 
                     var second_result = yield nightmare
-                        .goto(event_page)
+                        //.goto(event_page)
                         .type('body', '\u0020')
                         .wait('div.checkin.winner')
                         .end()
