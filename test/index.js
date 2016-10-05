@@ -4,7 +4,7 @@ var Nightmare = require('nightmare');
 var expect = require('chai').expect;
 
 describe('AmsterdamPHP Raffler', function () {
-    this.timeout(30000); // Set timeout to 15 seconds, instead of the original 2 seconds
+    this.timeout(60000); // Set timeout to 15 seconds, instead of the original 2 seconds
     var url = 'http://localhost:8080',
         nightmare;
 
