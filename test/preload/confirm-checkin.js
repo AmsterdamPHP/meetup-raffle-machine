@@ -1,5 +1,5 @@
 window.__nightmare = {};
-__nightmare.ipc = require('ipc');
+__nightmare.ipc = require('electron').ipcRenderer;
 
 window.confirm = function(message, defaultResponse){
     if(message.includes('Checkin as')){
