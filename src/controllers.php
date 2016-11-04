@@ -36,7 +36,7 @@ $app->get('/event/{id}', function ($id) use ($app) {
 
     $checkinsNumber = count($checkins);
 
-    $winners = ($checkinsNumber) ? $randomService->getRandomNumbers($checkinsNumber) : [];
+    $winners = $randomService->getRandomNumbers($checkinsNumber);
 
     return $app['twig']->render(
         'event_checkin.html.twig',

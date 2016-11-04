@@ -26,6 +26,8 @@ var Raffler = {
     flushConst: 'flush',
     raffleConst: 'raffle',
 
+    readyToRaffle: false,
+
     /**
      * Initialize
      */
@@ -41,7 +43,7 @@ var Raffler = {
 
         var key = e.keyCode;
 
-        // We only handle the space (32) and page down (34) keys. Page down is enabled because
+        // We only handle the space (32), page down (34) and esc (27) keys. Page down is enabled because
         // presentation remotes emit page down on the "next" button
         if (acceptedKeys[key] === undefined) {
             return;
@@ -54,7 +56,7 @@ var Raffler = {
         }
 
         // If we are in start state, start the raffler
-        if (Raffler.state == 'start') {
+        if (Raffler.state == 'start' && Raffler.readyToRaffle) {
             Raffler.raffle();
         }
 
@@ -167,6 +169,7 @@ var Raffler = {
         $('.not_checked_in').remove();
         $('.checked_in').removeClass('checked_in');
         Raffler.hideCheckinHint();
+        Raffler.readyToRaffle = true;
     }
 };
 
