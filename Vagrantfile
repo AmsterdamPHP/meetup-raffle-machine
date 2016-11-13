@@ -23,11 +23,17 @@ Vagrant.configure("2") do |config|
         config.vm.synced_folder "./", "/vagrant", id: "vagrant-root", :nfs => true
     end
 
-    if Vagrant.has_plugin?("vagrant-hostmanager")
-        config.hostmanager.enabled = true
-        config.hostmanager.manage_host = true
-        config.hostmanager.include_offline = true
+    if not Vagrant.has_plugin?("vagrant-hostmanager")
+        if system "vagrant plugin install vagrant-hostmanager"
+          exec "vagrant #{ARGV.join(' ')}"
+        else
+          abort "Aborting due to plugin installation failure."
+        end
     end
+
+    config.hostmanager.enabled = true
+    config.hostmanager.manage_host = true
+    config.hostmanager.include_offline = true
 
     config.vm.provision "ansible" do |ansible|
         ansible.playbook = "ansible/provision.yml"
@@ -49,13 +55,9 @@ Vagrant.configure("2") do |config|
             install_hhvm: "no",
             install_beanstalkd: "no",
             install_redis: "yes",
-            install_javascript_build_system: "no"
+            install_javascript_build_system: "yes"
         }
     end
-end
 
-Vagrant::Config.run do |config|
-    config.vm.provision :shell do |shell|
-        shell.inline = "sudo gem install compass --no-ri --no-rdoc && sudo gem install susy --no-ri --no-rdoc"
-    end
+    config.vm.provision "shell", path: "post-install.sh"
 end
