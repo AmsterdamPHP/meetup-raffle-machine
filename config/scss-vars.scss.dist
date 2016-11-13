@@ -1,0 +1,15 @@
+$background: #000000;
+$background-list-item: #1a1a1a;
+
+$color-text: #ffffff;
+
+$logo: '/img/logo.png';
+
+$background-list-item-hover: #212121;
+$list-item-current-color: rgba(179, 255, 151, 1.0);
+$color-list-item-text: #ffffff;
+
+$winner-background-color: rgba(0,0,0, 0.6);
+
+$raffle-highlight-border-color: #f00;
+

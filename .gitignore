@@ -4,6 +4,7 @@
 /logs/*
 silex.log
 /config/parameters.yml
+/config/scss-vars.scss
 /.vagrant
 node_modules/
 web/css/*
