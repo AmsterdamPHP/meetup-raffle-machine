@@ -104,7 +104,7 @@ final class MeetupService
         $event = $this->client->getEvent(array('id' => $id));
 
         $rsvps = $this->client->getRSVPs(
-            array('event_id' => $id, 'rsvp' => 'yes', 'order' => 'name', 'fields' => 'host', 'page' => 120)
+            array('event_id' => $id, 'rsvp' => 'yes', 'order' => 'name', 'fields' => 'host', 'page' => 300)
         );
 
         $event = $event->toArray();
