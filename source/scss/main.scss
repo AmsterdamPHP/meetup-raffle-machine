@@ -1,3 +1,6 @@
+/* Config vars */
+@import "../../config/scss-vars";
+
 $total-columns: 12;
 $column-width:  4em;
 $gutter-width:  1em;
@@ -11,8 +14,8 @@ $grid-padding:  $gutter-width;
 @import "susy";
 
 body {
-    color: #ffffff;
-    background: #000000;
+    color: $color-text;
+    background: $background;
     font-family: 'Open Sans', Arial, Helvetica, sans-serif;
     font-size: 20px;
     font-weight: 300;
@@ -28,7 +31,7 @@ body {
     line-height: 120px;
 
     a {
-        color: #ffffff;
+        color: $color-text;
         text-decoration: none;
     }
 
@@ -37,7 +40,7 @@ body {
         width: 444px;
         height: 80px;
         text-indent: -9999px;
-        background-image: url("/img/logo.png");
+        background-image: url($logo);
     }
     .secondary {
         display: inline-block;
@@ -76,21 +79,20 @@ body {
     }
 
     a {
-        background: #1a1a1a;
+        background: $background-list-item;
         display: block;
-        color: #fff;
+        color: $color-list-item-text;
         text-decoration: none;
         padding: 0.5em;
         margin-bottom: 1px;
 
         &:hover {
-            background: #212121;
+            background: $background-list-item-hover;
         }
     }
 
     .first a {
-        color: rgba(179, 255, 151, 1.0);
-        text-shadow: 0 -1px 0 #000,0px 0 5px rgba(179,255,151,.8);
+        color: $list-item-current-color;
         font-size: 1.2em;
     }
 }
@@ -115,7 +117,7 @@ body {
         }
 
         &.selected {
-            border-color: #f00;
+            border-color: $raffle-highlight-border-color;
         }
 
         &.loser {
@@ -135,7 +137,7 @@ body {
                 width: 100%;
                 display: block;
                 font-size: 2em;
-                background-color: rgba(0,0,0, 0.6);
+                background-color: $winner-background-color;
                 padding: 3px;
             }
         }
@@ -144,7 +146,7 @@ body {
     .checkin-link {
         margin-bottom: 1em;
         a:link, a:visited {
-            color: white;
+            color: $color-text;
         }
     }
 }
