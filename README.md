@@ -1,6 +1,6 @@
 # AmsterdamPHP - Meetup.com Raffler
 
-This application enables us to raffle off stuff to our meetup attendees. It uses the Meetup.com API to get all check ins, and then uses the Random.org API to randomly select winners.
+This application enables us to raffle off stuff to our meetup attendees. It uses the Meetup.com API to get all check ins, and then randomly selects winners.
 
 ## Installation
 
@@ -10,14 +10,18 @@ Ensure that [VirtualBox](https://www.virtualbox.org), [Vagrant](http://www.vagra
 
 1. `git clone git@github.com:AmsterdamPHP/meetup-raffle-machine.git --recursive`
 2. run `vagrant up`
-3. create config/parameters.yml (get your API key from [meetup.com](https://secure.meetup.com/meetup_api/key/))
+3. create `config/parameters.yml` (get your API key from [meetup.com](https://secure.meetup.com/meetup_api/key/))
 
     ```
-    meetup_group:   amsterdamphp
-    meetup_api_key: YOUR_MEETUP_API_KEY
+    parameters:
+      meetup_group:   amsterdamphp
+      meetup_api_key: YOUR_MEETUP_API_KEY
+      secret:         SomeRandomSecretToSeedSymfony
+      redis_dsn:      redis://locahost
     ```
+4. Add the following to your hosts file: `10.10.10.10 raffler.local`
 
-All done! Now you can access the application at [http://app.local/](http://app.local/).
+All done! Now you can access the application at [http://raffler.local/](http://raffler.local/).
 
 ### Install directly onto your host machine.
 
@@ -45,8 +49,11 @@ All done! Now you can access the application at [http://app.local/](http://app.l
 5. Create config/parameters.yml
 
     ```
-    meetup_group:   amsterdamphp
-    meetup_api_key: YOUR_MEETUP_API_KEY
+    parameters:
+      meetup_group:   amsterdamphp
+      meetup_api_key: YOUR_MEETUP_API_KEY
+      secret:         SomeRandomSecretToSeedSymfony
+      redis_dsn:      redis://locahost
     ```
 
 ## How to use it

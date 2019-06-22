@@ -33,12 +33,11 @@
             var params, $rsvpBlock = $(this);
 
             params = {
-                user_id: $rsvpBlock.attr('data-user-id'),
-                event_id: "{{ event.id }}"
+                user_id: $rsvpBlock.attr('data-user-id')
             };
 
             if (window.confirm("Checkin as " + $rsvpBlock.attr('data-user-name') + "?")) {
-                $.post("/user/checkin", params, function() {
+                $.post(window.location, params, function() {
                     $rsvpBlock.addClass('checked_in');
                     $rsvpBlock.removeClass('not_checked_in');
                     $rsvpBlock.unbind('click');

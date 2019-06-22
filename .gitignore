@@ -1,12 +1,11 @@
 /build/
 /vendor/
-/cache/*
-/logs/*
-silex.log
 /config/parameters.yml
 /.vagrant
 node_modules/
 web/css/*
 web/img/*
 web/js/*
-
+/.phpunit.result.cache
+/var/
+!/var/.gitkeep
