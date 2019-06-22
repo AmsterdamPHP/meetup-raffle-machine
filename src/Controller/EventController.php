@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Raffle\CheckInService;
 use App\Raffle\MeetupService;
 use App\Raffle\RandomService;
-use Predis\ClientInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,9 +25,9 @@ final class EventController
     private $randomService;
 
     /**
-     * @var ClientInterface
+     * @var CheckInService
      */
-    private $predis;
+    private $checkInService;
 
     /**
      * @var Environment
@@ -37,12 +37,12 @@ final class EventController
     public function __construct(
         MeetupService $meetupService,
         RandomService $randomService,
-        ClientInterface $predis,
+        CheckInService $checkInService,
         Environment $twig
     ) {
         $this->meetupService = $meetupService;
         $this->randomService = $randomService;
-        $this->predis = $predis;
+        $this->checkInService = $checkInService;
         $this->twig = $twig;
     }
 
@@ -66,7 +66,7 @@ final class EventController
     {
         $event = $this->meetupService->getEvent($id);
 
-        $checkins = array_filter($this->predis->lrange('checkin_'.$id, 0, 300));
+        $checkins = $this->checkInService->getCheckInsForEvent($id);
 
         $winners = (count($checkins) > 0)? $this->randomService->getRandomNumbers(count($checkins)) : [];
         return new Response($this->twig->render(
@@ -83,13 +83,13 @@ final class EventController
         if ($request->isMethod(Request::METHOD_POST)) {
             $userId = $request->request->get('user_id');
 
-            $this->predis->lpush('checkin_'.$eventId, $userId);
+            $this->checkInService->checkIn($eventId, $userId);
 
             return new JsonResponse(['result' => 'ok']);
         }
 
         $event = $this->meetupService->getEvent($eventId);
-        $checkins = array_filter($this->predis->lrange('checkin_'.$eventId, 0, 300));
+        $checkins = $this->checkInService->getCheckInsForEvent($eventId);
 
         return new Response($this->twig->render(
             'event_checkin.html.twig',
