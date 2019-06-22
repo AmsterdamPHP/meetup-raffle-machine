@@ -13,7 +13,7 @@
             <div data-user-id="{{ rsvp.id }}"
                  data-user-name="{{ rsvp.name }}"
                  class="rsvp {{ rsvp.id in checkins or rsvp.host ? 'checked_in':'not_checked_in' }}"
-                 style="background-image: url('{{ rsvp.photo.photo_link|default('/img/avatar.png') }}');"
+                 style="background-image: url('{{ rsvp.photo.photo_link|default(asset('assets/avatar.png') }}');"
 
             >
                 <span class="name">{{ rsvp.name }}</span>

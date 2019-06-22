@@ -3,14 +3,13 @@
 {% block title event.name %}
 
 {% block content %}
-
     <h2 class="title">{{ event.name }}</h2>
 
-    <div class="checkins">
+    <div class="checkins" data-winners="{{ winners|join(',') }}">
         <p class="checkin-link"><a href="{{ path('event_checkin', {eventId: event.id}) }}">Checkin here</a></p>
 
         {% for checkin in event.rsvps if checkin.id in checkins %}
-            <div class="checkin" style="background-image: url('{{ checkin.photo.photo_link|default('/img/avatar.png') }}');">
+            <div class="checkin" style="background-image: url('{{ checkin.photo.photo_link|default(asset('assets/avatar.png')) }}');">
                 <span class="name">{{ checkin.name|default('Y U NO HAVE NAME?') }}</span>
             </div>
         {% endfor %}
@@ -23,11 +22,5 @@
 {% block javascripts %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js"></script>
-    <script src="/js/main.min.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" charset="utf-8">
-        $(function() {
-            Raffler.init();
-            Raffler.winners = {{ winners|json_encode|raw }}
-        });
-    </script>
+    <script src="{{ asset('assets/raffler.js') }}" type="text/javascript" charset="utf-8"></script>
 {% endblock %}
