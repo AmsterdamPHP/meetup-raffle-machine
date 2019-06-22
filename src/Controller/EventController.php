@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Raffle\CheckInService;
-use App\Raffle\MeetupService;
+use App\Raffle\MeetupServiceInterface;
 use App\Raffle\RandomService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ use Twig\Environment;
 final class EventController
 {
     /**
-     * @var MeetupService
+     * @var MeetupServiceInterface
      */
     private $meetupService;
 
@@ -35,7 +35,7 @@ final class EventController
     private $twig;
 
     public function __construct(
-        MeetupService $meetupService,
+        MeetupServiceInterface $meetupService,
         RandomService $randomService,
         CheckInService $checkInService,
         Environment $twig
@@ -49,13 +49,11 @@ final class EventController
     /**
      * @Route(name="homepage", path="/", methods={"GET"})
      */
-    public function index(Request $request): Response
+    public function index(): Response
     {
-        $cacheBusting = filter_var($request->get('cache_busting', false), FILTER_VALIDATE_BOOLEAN);
-
         return new Response($this->twig->render(
             'index.html.twig',
-            ['meetups' => $this->meetupService->getPresentAndPastEvents($cacheBusting)]
+            ['meetups' => $this->meetupService->getPresentAndPastEvents()]
         ));
     }
 

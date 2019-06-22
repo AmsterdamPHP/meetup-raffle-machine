@@ -4,4 +4,4 @@ framework:
             cache.default:
                 adapter: cache.adapter.redis
                 default_lifetime: 900
-                provider: snc_redis.cache
+                provider: snc_redis.default

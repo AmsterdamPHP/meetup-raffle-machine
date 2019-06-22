@@ -20,3 +20,7 @@ services:
         key: '%meetup_api_key%'
 
   Predis\ClientInterface: '@snc_redis.default'
+
+  App\Raffle\MeetupServiceInterface: '@App\Raffle\MeetupService'
+  App\Raffle\CachingMeetupService:
+    decorates: 'App\Raffle\MeetupService'
