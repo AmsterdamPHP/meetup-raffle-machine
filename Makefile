@@ -19,4 +19,12 @@ vendor: composer.json composer.lock
 node_modules: package.json
 	npm install
 
-.PHONY: build-assets
+unit-tests: ## Run unit tests
+	vendor/bin/phpunit
+
+lint:
+	bin/console lint:twig templates/
+
+test: unit-tests lint
+
+.PHONY: help install build-assets unit-tests lint test
