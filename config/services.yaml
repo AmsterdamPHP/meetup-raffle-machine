@@ -1,0 +1,26 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    bind:
+      string $group: '%meetup_group%'
+
+  App\:
+    resource: '../src/*'
+    exclude: '../src/{Kernel.php,app.php,controllers.php}'
+
+  App\Controller\:
+    resource: '../src/Controller'
+    tags: ['controller.service_arguments']
+
+  DMS\Service\Meetup\AbstractMeetupClient:
+    factory: ['DMS\Service\Meetup\MeetupKeyAuthClient', 'factory']
+    arguments:
+      -
+        key: '%meetup_api_key%'
+
+  Predis\ClientInterface: '@snc_redis.default'
+
+  App\Raffle\MeetupServiceInterface: '@App\Raffle\MeetupService'
+  App\Raffle\CachingMeetupService:
+    decorates: 'App\Raffle\MeetupService'

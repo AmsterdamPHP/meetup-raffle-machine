@@ -4,11 +4,8 @@ $gutter-width:  1em;
 $grid-padding:  $gutter-width;
 
 /* compass */
-@import "compass/reset";
-@import "compass/css3";
-
-/* other plugins */
-@import "susy";
+@import "~compass-mixins/lib/compass/reset";
+@import "~compass-mixins/lib/compass/css3";
 
 body {
     color: #ffffff;
@@ -18,8 +15,16 @@ body {
     font-weight: 300;
 }
 
-.container {
-    @include container;
+.container{
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+    &:after{
+        content: " ";
+        display: block;
+        clear: both;
+    }
 }
 
 .logo {
@@ -37,7 +42,7 @@ body {
         width: 444px;
         height: 80px;
         text-indent: -9999px;
-        background-image: url("/img/logo.png");
+        background-image: url("../images/logo.png");
     }
     .secondary {
         display: inline-block;
@@ -46,7 +51,7 @@ body {
     }
 }
 
-@include susy-breakpoint(0em 40em) {
+@media (max-width:40em) {
     .logo {
         line-height: 60px;
 
