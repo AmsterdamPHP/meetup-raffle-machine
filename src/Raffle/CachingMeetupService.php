@@ -37,12 +37,10 @@ final class CachingMeetupService implements MeetupServiceInterface
 
     public function getPresentAndPastEvents(): array
     {
-        if ($this->requestStack->getMasterRequest()->query->get('cache_busting', false)) {
-            return $this->inner->getPresentAndPastEvents();
-        }
+        $bustCache = $this->requestStack->getMasterRequest()->query->get('cache_busting', false);
 
         $cachedEvents = $this->cacheItemPool->getItem('events_cache');
-        if ($cachedEvents->isHit()) {
+        if (!$bustCache && $cachedEvents->isHit()) {
             return $cachedEvents->get();
         }
 
