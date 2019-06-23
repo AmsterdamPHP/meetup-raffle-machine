@@ -17,7 +17,7 @@ Ensure that [VirtualBox](https://www.virtualbox.org), [Vagrant](http://www.vagra
       meetup_group:   amsterdamphp
       meetup_api_key: YOUR_MEETUP_API_KEY
       secret:         SomeRandomSecretToSeedSymfony
-      redis_dsn:      redis://locahost
+      redis_dsn:      redis://localhost
     ```
 1. Add the following to your hosts file: `10.10.10.10 raffler.local`
 
@@ -45,7 +45,7 @@ All done! Now you can access the application at [http://raffler.local/](http://r
       meetup_group:   amsterdamphp
       meetup_api_key: YOUR_MEETUP_API_KEY
       secret:         SomeRandomSecretToSeedSymfony
-      redis_dsn:      redis://locahost
+      redis_dsn:      redis://localhost
     ```
 
 ## How to use it
