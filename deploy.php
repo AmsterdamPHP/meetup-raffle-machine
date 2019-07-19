@@ -6,8 +6,8 @@ require 'recipe/composer.php';
 // Set configurations
 set('repository', 'git@github.com:AmsterdamPHP/meetup-raffle-machine.git');
 set('shared_files', ['config/parameters.yml']);
-set('shared_dirs', ['var']);
-set('writable_dirs', []);
+set('shared_dirs', ['cache', 'logs']);
+set('writable_dirs', ['cache', 'logs']);
 
 // Configure servers
 server('production', 'amsterdamphp.nl')

@@ -1,0 +1,5 @@
+parameters:
+    meetup_group:   amsterdamphp
+    meetup_api_key: YOUR_MEETUP_API_KEY
+    secret:         SomeRandomSecretToSeedSymfony
+    redis_dsn:      redis://localhost

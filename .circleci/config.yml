@@ -1,0 +1,59 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.2-cli-stretch-node
+    steps:
+      - run: sudo composer self-update
+      - checkout
+      - run: cp ~/project/config/parameters.yml.dist ~/project/config/parameters.yml
+
+      - restore_cache:
+          keys:
+            - project-dependencies-{{ checksum "~/project/composer.lock" }}
+            - composer-cache
+
+      - run: composer install -n -o
+      
+      - save_cache:
+          key: project-dependencies-{{ checksum "~/project/composer.lock" }}
+          paths:
+            - ~/project/vendor
+      - save_cache:
+          key: composer-cache
+          paths:
+            - ~/.composer/cache
+
+      - run: make test
+      - store_test_results:
+          path: build
+      - store_artifacts:
+          path: build
+
+  deploy:
+    docker:
+      - image: circleci/php:7.2-cli-stretch-node
+    steps:
+      - checkout
+      - run: npm install
+      - run: node_modules/.bin/encore prod
+      - restore_cache:
+          keys:
+            - project-dependencies-{{ checksum "~/project/composer.lock" }}
+            - composer-cache
+      - run: composer install -n -o
+      - run: cp ~/.ssh/id_amsterdamphp.nl ~/.ssh/id_rsa
+      - run: ./vendor/bin/dep deploy
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          filters:
+            branches:
+              only: master
+          requires:
+            - build

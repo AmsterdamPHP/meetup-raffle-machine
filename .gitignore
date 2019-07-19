@@ -9,7 +9,8 @@ web/js/*
 /.phpunit.result.cache
 /var/
 !/var/.gitkeep
-
+cache/*
+logs/*
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /web/build/
