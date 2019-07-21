@@ -1,12 +1,19 @@
 /build/
 /vendor/
-/cache/*
-/logs/*
-silex.log
 /config/parameters.yml
 /.vagrant
 node_modules/
 web/css/*
 web/img/*
 web/js/*
-
+/.phpunit.result.cache
+/var/
+!/var/.gitkeep
+cache/*
+logs/*
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/web/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###

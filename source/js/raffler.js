@@ -13,7 +13,7 @@ var Raffler = {
     currentCycle: 0,
 
     /**
-     * Array of truely random numbers from random.org. This is populated
+     * Array of truely random numbers. This is populated
      * on page load. We select the winners from this array.
      */
     winners: [],
@@ -26,7 +26,8 @@ var Raffler = {
     /**
      * Initialize
      */
-    init: function() {
+    init: function(winners) {
+        Raffler.winners = winners;
         $(document).on('keydown', Raffler.onKeyDown);
     },
 
@@ -146,3 +147,8 @@ var Raffler = {
         return($('.checkin').eq(random));
     }
 };
+
+let $checkins = $('.checkins[data-winners]');
+if ($checkins.length > 0) {
+    Raffler.init($checkins.data('winners').split(','));
+}

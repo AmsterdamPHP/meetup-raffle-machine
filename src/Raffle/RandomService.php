@@ -1,6 +1,7 @@
 <?php
+declare(strict_types=1);
 
-namespace Raffle;
+namespace App\Raffle;
 
 use RandomLib\Factory;
 use SecurityLib\Strength;
@@ -9,18 +10,15 @@ final class RandomService
 {
     /**
      * Retrieve a block of random numbers.
-     *
-     * @param int $amount How many random numbers you require
-     * @return array
      */
-    public function getRandomNumbers($amount)
+    public function getRandomNumbers(int $amount): array
     {
         $factory = new Factory();
         $generator = $factory->getGenerator(new Strength(Strength::MEDIUM));
 
         $numbers = [];
 
-        while(count($numbers) < $amount) {
+        while (count($numbers) < $amount) {
             // Amount minus 1 since we want results ranging from zero till amount
             $numbers[] = $generator->generateInt(0, $amount - 1);
             $numbers   = array_unique($numbers);
