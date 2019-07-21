@@ -1,0 +1,21 @@
+# syntax=docker/dockerfile:1.0.0-experimental
+
+# Inherit from Usabilla dev image, which already has xdebug and its configuration.
+# All necessary global configurations, extensions and modules
+# should be put here
+FROM usabillabv/php:7.3-fpm-alpine3.10-dev AS base
+
+# When composer gets copied we want to make sure it's from the major version 1
+FROM composer:1 as composer
+
+## Add composer and set correct user and volumes
+## IMPORTANT: This image won't have source files, like it usually happens on apps,
+## meaning if you pull it from ECR it'll be empty, the images built on CI are purely
+## meant for build time and for development you should use the mount
+FROM base AS dev
+
+COPY --chown=app:app --from=composer /usr/bin/composer /usr/bin/composer
+
+WORKDIR /opt/project
+
+VOLUME [ "/opt/project" ]
